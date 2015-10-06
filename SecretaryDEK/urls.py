@@ -15,7 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-
+from secretary import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', views.show_base, name='base'),
 ]
+
+# TODO: Доробити логін
+# TODO:     Додати форму логування
+# TODO:     Додати профіль юзера
+# TODO:     Додати логаут
+# TODO: Додати приховати м'ясо
+
