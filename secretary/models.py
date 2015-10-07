@@ -1,8 +1,6 @@
 from django.db import models
 
 # Create your models here.
-
-
 '''
 Diploma
 Type	Name	Description
@@ -21,7 +19,7 @@ bool	Type	Колір диплому
 bool	Fellowship	Аспірантура
 int	Mark	Оцінка
 '''
-
+# For UserType we using builtin model User, that contain authorization and authentication
 
 class Reviewer(models.Model):
     """
@@ -58,7 +56,6 @@ class UserProfile(models.Model):
     mname = models.CharField(null=False, max_length=100)
     bdate = models.DateField()
     entry2uni = models.DateField()
-    userid = models.ForeignKey(UserType)
     registered = models.BooleanField(null=False)
     login = models.CharField(max_length=30, null=False)
     password = models.CharField(null=False)
