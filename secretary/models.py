@@ -4,7 +4,6 @@ from django.db import models
 
 
 '''
-
 Diploma
 Type	Name	Description
 int	Id	-
@@ -21,16 +20,7 @@ Date	DateHanding	Дата захисту
 bool	Type	Колір диплому
 bool	Fellowship	Аспірантура
 int	Mark	Оцінка
-
 '''
-
-
-class UserType(models.Model):
-    """
-    User type ORM. Holds only ID of a type and a verbose name of that type.
-    """
-    id = models.IntegerField(unique=True, db_index=True, primary_key=True)
-    typename = models.CharField(max_length=50, unique=True, null=False)
 
 
 class Reviewer(models.Model):
@@ -53,7 +43,7 @@ class Guide(models.Model):
     mname = models.CharField(null=False, max_length=100)
 
 
-class User(models.Model):
+class UserProfile(models.Model):
     """
     User ORM. Foreign key - UserType.
     ID == PK
