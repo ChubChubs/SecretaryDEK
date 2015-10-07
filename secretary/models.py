@@ -40,6 +40,8 @@ class Guide(models.Model):
     surname = models.CharField(null=False, max_length=100)
     mname = models.CharField(null=False, max_length=100)
 
+# TODO: Create application "Account", that contain all information about user, login, logout, session.
+
 
 class UserProfile(models.Model):
     """
@@ -50,6 +52,7 @@ class UserProfile(models.Model):
     Boolean Field - registered
     login and password to be enhanced. Maybe.
     """
+    # TODO: id must have relation to default model User
     id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True)
     name = models.CharField(null=False, max_length=100)
     surname = models.CharField(null=False, max_length=100)
@@ -58,7 +61,7 @@ class UserProfile(models.Model):
     entry2uni = models.DateField()
     registered = models.BooleanField(null=False)
     login = models.CharField(max_length=30, null=False)
-    password = models.CharField(null=False)
+    password = models.CharField(max_length=30, null=False)
 
 
 class Diploma(models.Model):
