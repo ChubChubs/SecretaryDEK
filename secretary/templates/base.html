@@ -31,12 +31,12 @@
             <!-- User's toolbar for authenticated users -->
             <div class="col-xs-2" id="user-toolbar">
                 <span></span>
-                <a href="#">Logout</a>
+                <a href="{% url "users:auth_logout" %}">Logout</a>
             </div>
         {% else %}
             <!-- User's toolbar for anonymous users -->
             <div class="col-xs-6" id="user-toolbar">
-                <a href="#">Login</a>
+                <a href="{% url "users:auth_login" %}">Login</a>
             </div>
         {% endif %}
     </div>

@@ -20,7 +20,7 @@ bool	Fellowship	Аспірантура
 int	Mark	Оцінка
 '''
 # For UserType we using builtin model User, that contain authorization and authentication
-
+'''
 class Reviewer(models.Model):
     """
     Reviewer ORM. Holds typical name, surname, mname and a ID. For now.
@@ -87,3 +87,4 @@ class Diploma(models.Model):
     type = models.BooleanField(verbose_name='diploma_type')
     fellowship = models.BooleanField(verbose_name='fellowship')
     mark = models.IntegerField(verbose_name='mark')
+'''

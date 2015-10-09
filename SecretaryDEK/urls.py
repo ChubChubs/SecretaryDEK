@@ -16,14 +16,17 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from secretary import views
+from django.contrib.auth import views as auth_views
+from django.views.generic.base import RedirectView
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.show_base, name='base'),
+    url(r'^users/logout/$', auth_views.logout, kwargs={'next_page': 'base'}, name='auth_logout'),
+    url(r'^register/complete/$', RedirectView.as_view(pattern_name='base'), name='registration_complete'),
+    url(r'^users/', include('registration.backends.simple.urls', namespace='users')),
 ]
 
 # TODO: Доробити логін
-# TODO:     Додати форму логування
 # TODO:     Додати профіль юзера
-# TODO:     Додати логаут
 # TODO: Додати приховати м'ясо
 
