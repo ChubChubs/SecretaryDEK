@@ -75,6 +75,7 @@ class Diploma(models.Model):
     """
     id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True)
     theme = models.TextField(max_length=512)
+    theme_eng = models.TextField(max_length=512)
     year = models.IntegerField(verbose_name="year")
     group = models.CharField(verbose_name='group', max_length=30)
     reviewer = models.ForeignKey(Reviewer)
