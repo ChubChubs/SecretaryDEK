@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import serializers
+from rest_framework.authtoken.views import AuthTokenSerializer,ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from .models import Diploma
 # from datetime import datetime
@@ -88,3 +89,26 @@ class UserView(generics.ListAPIView, mixins.ListModelMixin,
         queryset = User.objects.all()
         renderer_classes = (JSONRenderer, )
         serializer_class = serializers.Serializer
+
+class TokenRenderView(APIView):
+    """
+    Logout View. POST!
+    Provide your access token, tour login and your password
+    To get the hell out of here.
+    Basically, makes access token invalid.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        serializer = AuthTokenSerializer(data=request.data)
+        if serializer.is_valid():
+            token, _ = Token.objects.get_or_create(
+                user=serializer.validated_data['user']
+            )
+            token.delete()
+            token = Token.objects.create(user=serializer.validated_data['user'])
+            token.save()
+            data = {'token': token.key} # heh)
+            return Response(status.HTTP_200_OK)
+        else :
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
