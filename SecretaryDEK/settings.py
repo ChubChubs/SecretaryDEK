@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'secretary',
+    'rest_framework.authtoken',
     'registration',
 )
 
@@ -73,6 +74,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'SecretaryDEK.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    )
+}
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
