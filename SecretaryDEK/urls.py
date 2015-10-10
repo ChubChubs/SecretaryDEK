@@ -15,15 +15,22 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from secretary import views
 from django.contrib.auth import views as auth_views
 from django.views.generic.base import RedirectView
+from secretary import views,api,tests
+from rest_framework.authtoken import views as rest_views
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.show_base, name='base'),
     url(r'^users/logout/$', auth_views.logout, kwargs={'next_page': 'base'}, name='auth_logout'),
     url(r'^register/complete/$', RedirectView.as_view(pattern_name='base'), name='registration_complete'),
     url(r'^users/', include('registration.backends.simple.urls', namespace='users')),
+    url(r'^api/example', api.ExampleView.as_view()),
+    url(r'^api/users', api.UserView.as_view()),
+    url(r'^api/obtainauthtoken', rest_views.obtain_auth_token),
+    url(r'^api/diplomas', api.DiplomaView.as_view()),
+    # url(r'^api/lol_data', tests.guide_add_data),
 ]
 
 # TODO: Доробити логін
