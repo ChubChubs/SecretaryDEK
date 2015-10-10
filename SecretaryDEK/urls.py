@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^api/users', api.UserView.as_view()),
     url(r'^api/obtainauthtoken', rest_views.obtain_auth_token),
     url(r'^api/diplomas', api.DiplomaView.as_view()),
+    url(r'^api/logout', api.TokenRenderView.as_view()),
     # url(r'^api/lol_data', tests.guide_add_data),
 ]
 
