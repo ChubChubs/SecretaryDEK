@@ -1,24 +1,7 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
-'''
-Diploma
-Type	Name	Description
-int	Id	-
-string	Theme	Тема
-int	Year	Рік
-string	Group	Група
-ReviewerId	Reviewer	Рецензент
-Date	DateReview	дата рецензування
-GuideId	Guide	Керівник
-int	GuideMark	Оцінка керівника
-int	PagesWork	К-сть сторю зап.
-int	PagesPresentation	К-ть стр. презент.
-Date	DateHanding	Дата захисту
-bool	Type	Колір диплому
-bool	Fellowship	Аспірантура
-int	Mark	Оцінка
-'''
+
 # For UserType we using builtin model User, that contain authorization and authentication
 '''
 class Reviewer(models.Model):
@@ -47,21 +30,16 @@ class UserProfile(models.Model):
     """
     User ORM. Foreign key - UserType.
     ID == PK
-    Standard fields name, surname, mname.
+    Standard fields are in the User Model
     Date Fields - bdate (Birth) and entry2uni
     Boolean Field - registered
     login and password to be enhanced. Maybe.
     """
-    # TODO: id must have relation to default model User
     id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True)
-    name = models.CharField(null=False, max_length=100)
-    surname = models.CharField(null=False, max_length=100)
-    mname = models.CharField(null=False, max_length=100)
     bdate = models.DateField()
+    user = models.ForeignKey(User)
     entry2uni = models.DateField()
     registered = models.BooleanField(null=False)
-    login = models.CharField(max_length=30, null=False)
-    password = models.CharField(max_length=30, null=False)
 
 
 class Diploma(models.Model):
@@ -78,9 +56,10 @@ class Diploma(models.Model):
     theme_eng = models.TextField(max_length=512)
     year = models.IntegerField(verbose_name="year")
     group = models.CharField(verbose_name='group', max_length=30)
-    reviewer = models.ForeignKey(Reviewer)
+    reviewer = models.ForeignKey(Reviewer, blank=True, null=True)
     datereview = models.DateField(verbose_name='review_date')
-    guide = models.ForeignKey(Guide)
+    guide = models.ForeignKey(Guide, blank=True, null=True)
+    profile = models.ForeignKey(UserProfile, blank=True, null=True)
     guidemark = models.IntegerField(verbose_name='guide_mark')
     pageswork = models.IntegerField(verbose_name='pages_work')
     pagespresentation = models.IntegerField(verbose_name='presentation_pages')
