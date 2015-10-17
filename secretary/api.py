@@ -1,5 +1,5 @@
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -10,7 +10,7 @@ from rest_framework import generics
 from rest_framework import serializers
 from rest_framework.authtoken.views import AuthTokenSerializer,ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from .models import Diploma
+from .models import Diploma, Reviewer, Guide, UserProfile
 # from datetime import datetime
 
 '''
@@ -32,11 +32,37 @@ class DiplomaSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Diploma
-        fields = ('theme', 'theme_eng', 'year', 'group', 'reviewer', 'datereview', 'guide', 'guidemark', 'pageswork',
-                  'pagespresentation', 'datehanding', 'type', 'fellowship', 'mark', )
+        fields = ('id', 'theme', 'theme_eng', 'year', 'group', 'reviewer', 'datereview', 'guide', 'guidemark',
+                  'pageswork', 'pagespresentation', 'datehanding', 'type', 'fellowship', 'mark', )
 
 
-class DiplomaView(generics.ListCreateAPIView):
+class UserSerializer(serializers.ModelSerializer):
+    """
+    User Model serializer. Secured a little
+    """
+    class Meta:
+        model = User
+        fields = ('id', 'username',)
+
+class ReviewerSerializer(serializers.ModelSerializer):
+    """
+    Reviewer model serializer.
+    When the DB will be updated, these shit bricks must change too.
+    """
+    class Meta:
+        model = Reviewer
+        fields = ('id', 'name', 'mname', 'surname', )
+
+
+class GuideSerializer(serializers.ModelSerializer):
+    """
+    For Guides. Simply. Chunky. Exploitable!
+    """
+    class Meta:
+        model = Guide
+        fields = ('id', 'name', 'mname', 'surname', )
+
+class DiplomasView(generics.ListCreateAPIView):
     """
     API view for diplomas.
     Handles POST's and GET's
@@ -46,8 +72,23 @@ class DiplomaView(generics.ListCreateAPIView):
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
     queryset = Diploma.objects.all()
+    serializer_class = DiplomaSerializer
+    renderer_classes = (JSONRenderer, )
+
+
+class DiplomasUpd(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Additional API view.
+    Handles all http requests.
+    Handles specified instances, counted by a primary key.
+    Does not respond anything.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+    queryset = Diploma.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = DiplomaSerializer
+    lookup_field = 'id'
 
 
 class ExampleView(APIView):
@@ -75,21 +116,6 @@ class ExampleView(APIView):
         return Response(content, status=status.HTTP_202_ACCEPTED)
 
 
-class UserView(generics.ListAPIView, mixins.ListModelMixin,
-               mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin):
-        """
-        User view API.
-        Has to handle full spectre of requests. User-friendly.
-        Has many things todo. What todo is listed below. If not, then it's done!)
-        """
-        # TODO: Authentication,Session and Tokenizing all the way
-        # TODO: GET, POST, PUT and DELETE
-        # TODO: Validation
-        # TODO: Consider a split to a few API's
-        queryset = User.objects.all()
-        renderer_classes = (JSONRenderer, )
-        serializer_class = serializers.Serializer
-
 class TokenRenderView(APIView):
     """
     Logout View. POST!
@@ -108,7 +134,87 @@ class TokenRenderView(APIView):
             token.delete()
             token = Token.objects.create(user=serializer.validated_data['user'])
             token.save()
-            data = {'token': token.key} # heh)
+            # data = {'token': token.key} # heh)
             return Response(status.HTTP_200_OK)
-        else :
+        else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ReviewersView(generics.ListCreateAPIView):
+    """
+    API for reviewers.
+    Handles GET
+    :returns:
+    All reviewers
+    Handles POST
+    :returns:
+    A JSON with applied data in it.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+    queryset = Reviewer.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = ReviewerSerializer
+    lookup_field = 'id'
+
+
+class ReviewersUpd(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Handles GET
+    :returns:
+    A specified Reviewer.
+    Handles PUT.
+    It updates a specified Reviewer.
+    :returns:
+    Noting. Status_200
+    Handles DELETE
+    Deletes a specified Reviewer
+    :returns:
+    Nothing
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated, IsAdminUser)
+    queryset = Reviewer.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = ReviewerSerializer
+    lookup_field = 'id'
+
+
+class GuidesView(generics.ListCreateAPIView):
+    """
+    API for guides.
+    Handles GET
+    :returns:
+    All guides
+    Handles POST
+    :returns:
+    A JSON with applied data in it.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+    queryset = Guide.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = GuideSerializer
+    lookup_field = 'id'
+
+
+class GuidesUpd(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Handles GET
+    :returns:
+    A specified Guide.
+    Handles PUT.
+    It updates a specified Guide.
+    :returns:
+    Noting. Status_200
+    Handles DELETE
+    Deletes a specified Guide
+    :returns:
+    Nothing
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
+    queryset = Guide.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = GuideSerializer
+    lookup_field = 'id'

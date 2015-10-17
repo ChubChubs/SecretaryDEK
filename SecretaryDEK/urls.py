@@ -27,10 +27,14 @@ urlpatterns = [
     url(r'^register/complete/$', RedirectView.as_view(pattern_name='base'), name='registration_complete'),
     url(r'^users/', include('registration.backends.simple.urls', namespace='users')),
     url(r'^api/example', api.ExampleView.as_view()),
-    url(r'^api/users', api.UserView.as_view()),
     url(r'^api/login', rest_views.obtain_auth_token),
-    url(r'^api/diplomas', api.DiplomaView.as_view()),
+    url(r'^api/diplomas/(?P<id>[0-9]+)', api.DiplomasUpd.as_view()),
+    url(r'^api/diplomas', api.DiplomasView.as_view()),
     url(r'^api/logout', api.TokenRenderView.as_view()),
+    url(r'^api/reviewers/(?P<id>[0-9]+)', api.ReviewersUpd.as_view()),
+    url(r'^api/reviewers', api.ReviewersView.as_view()),
+    url(r'^api/guides/(?P<id>[0-9]+)', api.GuidesUpd.as_view()),
+    url(r'^api/guides', api.GuidesView.as_view()),
     # url(r'^api/lol_data', tests.guide_add_data),
 ]
 
