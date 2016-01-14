@@ -9,11 +9,18 @@ class Reviewer(models.Model):
     Reviewer ORM. Holds typical name, surname, mname and a ID. For now.
     """
     id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True)
-    name = models.CharField(null=False, max_length=100)
-    surname = models.CharField(null=False, max_length=100)
-    mname = models.CharField(null=False, max_length=100)
-
-
+    name = models.CharField(null=False, max_length=100, verbose_name="Ім'я")
+    surname = models.CharField(null=False, max_length=100, verbose_name="Прізвище")
+    mname = models.CharField(null=False, max_length=100, verbose_name="По-батькові")
+    passseries = models.CharField(null=True, max_length=5, verbose_name="Серія паспорта")
+    passnum = models.IntegerField(null=True, verbose_name="Номер паспорта")
+    idnum = models.CharField(max_length=13, null=True, verbose_name="Ідентифікаційний код")
+    passplace = models.CharField(max_length=50, null=True, verbose_name="Ким виданий")
+    passdate = models.DateField(null=True, verbose_name="Коли виданий")
+    graduate = models.CharField(null=True, max_length=250, verbose_name="Освіта")
+    edugrade = models.CharField(null=True, max_length=10, verbose_name="Вчене звання")
+    workplace = models.CharField(null=True, max_length=250, verbose_name="Місце роботи")
+'''
 class Guide(models.Model):
     """
     Guideman ORM. Holds typical name, surname, mname and a ID. For now.
@@ -25,7 +32,7 @@ class Guide(models.Model):
 
 # TODO: Create application "Account", that contain all information about user, login, logout, session.
 
-
+'''
 class UserProfile(models.Model):
     """
     User ORM. Foreign key - UserType.
@@ -40,6 +47,8 @@ class UserProfile(models.Model):
     user = models.ForeignKey(User)
     entry2uni = models.DateField()
     registered = models.BooleanField(null=False)
+    lector = models.BooleanField(null=True)
+    student = models.BooleanField(null=True)
 
 
 class Diploma(models.Model):
@@ -58,7 +67,7 @@ class Diploma(models.Model):
     group = models.CharField(verbose_name='group', max_length=30)
     reviewer = models.ForeignKey(Reviewer, blank=True, null=True)
     datereview = models.DateField(verbose_name='review_date')
-    guide = models.ForeignKey(Guide, blank=True, null=True)
+    guide = models.ForeignKey(Reviewer, blank=True, null=True)
     profile = models.ForeignKey(UserProfile, blank=True, null=True)
     guidemark = models.IntegerField(verbose_name='guide_mark')
     pageswork = models.IntegerField(verbose_name='pages_work')
