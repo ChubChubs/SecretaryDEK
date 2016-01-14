@@ -1,3 +1,4 @@
 Django==1.8.5
 django-registration-redux==1.2
 djangorestframework
+docxtpl
