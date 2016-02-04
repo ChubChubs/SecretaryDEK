@@ -10,7 +10,8 @@ from rest_framework import generics
 from rest_framework import serializers
 from rest_framework.authtoken.views import AuthTokenSerializer,ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from .models import Diploma, Reviewer, Guide, UserProfile
+from .models import Diploma, Reviewer, UserProfile
+from docgen import generator
 # from datetime import datetime
 
 '''
@@ -53,13 +54,13 @@ class ReviewerSerializer(serializers.ModelSerializer):
         model = Reviewer
         fields = ('id', 'name', 'mname', 'surname', )
 
-
+''
 class GuideSerializer(serializers.ModelSerializer):
     """
     For Guides. Simply. Chunky. Exploitable!
     """
     class Meta:
-        model = Guide
+        model = Reviewer
         fields = ('id', 'name', 'mname', 'surname', )
 
 class DiplomasView(generics.ListCreateAPIView):
@@ -100,10 +101,12 @@ class ExampleView(APIView):
     renderer_classes = (JSONRenderer, )
 
     def get(self, request, format=None):
+        item = generator.gen_a_doc("doc")
         content = {
             "unicode black star": "★",
             "value": 999,
-            "method": u"GET"
+            "method": u"GET",
+            "doc": item
         }
         return Response(content)
 
@@ -192,7 +195,7 @@ class GuidesView(generics.ListCreateAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
-    queryset = Guide.objects.all()
+    queryset = Reviewer.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = GuideSerializer
     lookup_field = 'id'
@@ -214,7 +217,7 @@ class GuidesUpd(generics.RetrieveUpdateDestroyAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
-    queryset = Guide.objects.all()
+    queryset = Reviewer.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = GuideSerializer
     lookup_field = 'id'

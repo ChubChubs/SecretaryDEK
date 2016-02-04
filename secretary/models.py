@@ -43,12 +43,12 @@ class UserProfile(models.Model):
     login and password to be enhanced. Maybe.
     """
     id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True)
-    bdate = models.DateField()
+    bdate = models.DateField(verbose_name="Дата народження")
     user = models.ForeignKey(User)
-    entry2uni = models.DateField()
-    registered = models.BooleanField(null=False)
-    lector = models.BooleanField(null=True)
-    student = models.BooleanField(null=True)
+    entry2uni = models.DateField(verbose_name="Дата вступу в універ")
+    registered = models.BooleanField(verbose_name="Валідний?")
+    lector = models.BooleanField(verbose_name="Лектор?")
+    student = models.BooleanField(verbose_name="Штюдент?")
 
 
 class Diploma(models.Model):
@@ -60,19 +60,21 @@ class Diploma(models.Model):
     Boolean Fields are type (is it a red diploma or NO) and fellowship
     Foreign Keys are Reviewer and Guide
     """
-    id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True)
-    theme = models.TextField(max_length=512)
-    theme_eng = models.TextField(max_length=512)
-    year = models.IntegerField(verbose_name="year")
-    group = models.CharField(verbose_name='group', max_length=30)
-    reviewer = models.ForeignKey(Reviewer, blank=True, null=True)
-    datereview = models.DateField(verbose_name='review_date')
-    guide = models.ForeignKey(Reviewer, blank=True, null=True)
-    profile = models.ForeignKey(UserProfile, blank=True, null=True)
-    guidemark = models.IntegerField(verbose_name='guide_mark')
-    pageswork = models.IntegerField(verbose_name='pages_work')
-    pagespresentation = models.IntegerField(verbose_name='presentation_pages')
-    datehanding = models.DateField()
-    type = models.BooleanField(verbose_name='diploma_type')
-    fellowship = models.BooleanField(verbose_name='fellowship')
-    mark = models.IntegerField(verbose_name='mark')
+    id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True)
+    theme = models.TextField(max_length=512, verbose_name="Тема")
+    theme_eng = models.TextField(max_length=512, verbose_name="Тема англійською")
+    year = models.IntegerField(verbose_name="Рік")
+    group = models.CharField(verbose_name='Група', max_length=30)
+    reviewer = models.ForeignKey(Reviewer, related_name="Рецензент", blank=True, null=True, verbose_name="Рецензент",
+                                 db_constraint=False)
+    datereview = models.DateField(verbose_name='Дата рецензації')
+    guide = models.ForeignKey(Reviewer, blank=True, null=True, related_name="Керівник", verbose_name="Керівник",
+                              db_constraint=False)
+    profile = models.ForeignKey(UserProfile, blank=True, null=True, verbose_name="Профіль шановного юзверя")
+    guidemark = models.IntegerField(verbose_name='Оцінка керівника')
+    pageswork = models.IntegerField(verbose_name='Клькість сторінок в записці')
+    pagespresentation = models.IntegerField(verbose_name='Кількість слайдів у презентації')
+    datehanding = models.DateField(verbose_name="Дата захисту")
+    type = models.BooleanField(verbose_name='Диплом-то червоний?')
+    fellowship = models.BooleanField(verbose_name='Рекомендований в аспірантуру?')
+    mark = models.IntegerField(verbose_name='Оцінка')

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
+import os, sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'secretary',
+    'docgen',
     'rest_framework.authtoken',
     'registration',
 )
@@ -114,3 +115,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+TMP_DEST = './tmp/'
+TMP_URL = '/docs/'
+DOC_TEMPLATES_DIR = 'doc_templates/'
+DOC_CONTEXT_GEN_DIR = 'doc_templates/'
+PROJECT_ROOT = os.path.dirname(os.path.abspath(os.path.join(__file__, os.pardir)))
+
+sys.path.insert(0, os.path.join(PROJECT_ROOT, DOC_CONTEXT_GEN_DIR ))
