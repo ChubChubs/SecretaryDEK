@@ -8,7 +8,7 @@ class Reviewer(models.Model):
     """
     Reviewer ORM. Holds typical name, surname, mname and a ID. For now.
     """
-    id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True)
+    id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
     name = models.CharField(null=False, max_length=100, verbose_name="Ім'я")
     surname = models.CharField(null=False, max_length=100, verbose_name="Прізвище")
     mname = models.CharField(null=False, max_length=100, verbose_name="По-батькові")
@@ -42,7 +42,7 @@ class UserProfile(models.Model):
     Boolean Field - registered
     login and password to be enhanced. Maybe.
     """
-    id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True)
+    id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
     bdate = models.DateField(verbose_name="Дата народження")
     user = models.ForeignKey(User)
     entry2uni = models.DateField(verbose_name="Дата вступу в універ")
@@ -60,7 +60,7 @@ class Diploma(models.Model):
     Boolean Fields are type (is it a red diploma or NO) and fellowship
     Foreign Keys are Reviewer and Guide
     """
-    id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True)
+    id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
     theme = models.TextField(max_length=512, verbose_name="Тема")
     theme_eng = models.TextField(max_length=512, verbose_name="Тема англійською")
     year = models.IntegerField(verbose_name="Рік")
@@ -78,3 +78,11 @@ class Diploma(models.Model):
     type = models.BooleanField(verbose_name='Диплом-то червоний?')
     fellowship = models.BooleanField(verbose_name='Рекомендований в аспірантуру?')
     mark = models.IntegerField(verbose_name='Оцінка')
+    special_circumstances = models.BooleanField(verbose_name="Спец обставини. Достроковий захист і проч.")
+
+class HandWeek(models.Model):
+    id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
+    season = models.BooleanField(verbose_name='Зима?')
+    start = models.DateField(verbose_name="Початок захистів")
+    finish = models.DateField(verbose_name="Кінець захистів")
+

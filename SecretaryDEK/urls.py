@@ -17,8 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.views.generic.base import RedirectView
-from secretary import views,api,tests
-from rest_framework.authtoken import views as rest_views
+from secretary import views, urls as APIs
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -26,19 +25,9 @@ urlpatterns = [
     url(r'^users/logout/$', auth_views.logout, kwargs={'next_page': 'base'}, name='auth_logout'),
     url(r'^register/complete/$', RedirectView.as_view(pattern_name='base'), name='registration_complete'),
     url(r'^users/', include('registration.backends.simple.urls', namespace='users')),
-    url(r'^api/example', api.ExampleView.as_view()),
-    url(r'^api/login', rest_views.obtain_auth_token),
-    url(r'^api/diplomas/(?P<id>[0-9]+)', api.DiplomasUpd.as_view()),
-    url(r'^api/diplomas', api.DiplomasView.as_view()),
-    url(r'^api/logout', api.TokenRenderView.as_view()),
-    url(r'^api/reviewers/(?P<id>[0-9]+)', api.ReviewersUpd.as_view()),
-    url(r'^api/reviewers', api.ReviewersView.as_view()),
-    url(r'^api/guides/(?P<id>[0-9]+)', api.GuidesUpd.as_view()),
-    url(r'^api/guides', api.GuidesView.as_view()),
+    url(r'^api/', include(APIs)),
+
     # url(r'^api/lol_data', tests.guide_add_data),
 ]
 
-# TODO: Доробити логін
-# TODO:     Додати профіль юзера
-# TODO: Додати приховати м'ясо
 

@@ -10,7 +10,7 @@ from rest_framework import generics
 from rest_framework import serializers
 from rest_framework.authtoken.views import AuthTokenSerializer,ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from .models import Diploma, Reviewer, UserProfile
+from .models import Diploma, Reviewer, UserProfile, HandWeek
 from docgen import generator
 # from datetime import datetime
 
@@ -55,13 +55,21 @@ class ReviewerSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'mname', 'surname', )
 
 ''
-class GuideSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     """
-    For Guides. Simply. Chunky. Exploitable!
+    For Profile. Simply. Chunky. Exploitable!
     """
     class Meta:
-        model = Reviewer
+        model = UserProfile
         fields = ('id', 'name', 'mname', 'surname', )
+
+class WeekSerializer(serializers.ModelSerializer):
+    """
+    For handing weeks.
+    """
+    class Meta:
+        model = HandWeek
+        fields = ('id','start', 'finish', 'season')
 
 class DiplomasView(generics.ListCreateAPIView):
     """
@@ -183,41 +191,79 @@ class ReviewersUpd(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 
-class GuidesView(generics.ListCreateAPIView):
+class ProfileView(generics.ListCreateAPIView):
     """
-    API for guides.
+    API for Profiles.
     Handles GET
     :returns:
-    All guides
+    All Profiles
     Handles POST
     :returns:
     A JSON with applied data in it.
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
-    queryset = Reviewer.objects.all()
+    queryset = UserProfile.objects.all()
     renderer_classes = (JSONRenderer, )
-    serializer_class = GuideSerializer
+    serializer_class = ProfileSerializer
     lookup_field = 'id'
 
 
-class GuidesUpd(generics.RetrieveUpdateDestroyAPIView):
+class ProfileUpd(generics.RetrieveUpdateDestroyAPIView):
     """
     Handles GET
     :returns:
-    A specified Guide.
+    A specified Profile.
     Handles PUT.
-    It updates a specified Guide.
+    It updates a specified Profile.
     :returns:
     Noting. Status_200
     Handles DELETE
-    Deletes a specified Guide
+    Deletes a specified Profile
     :returns:
     Nothing
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
-    queryset = Reviewer.objects.all()
+    queryset = UserProfile.objects.all()
     renderer_classes = (JSONRenderer, )
-    serializer_class = GuideSerializer
+    serializer_class = ProfileSerializer
+    lookup_field = 'id'
+
+class WeekView(generics.ListCreateAPIView):
+    """
+    API for handling weeks.
+    Handles GET
+    :returns:
+    All weeks.
+    Handles POST
+    :returns:
+    A JSON with applied data in it.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+    queryset = HandWeek.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = WeekSerializer
+    lookup_field = 'id'
+
+class WeekUpd(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Handles GET
+    :returns:
+    A specified Profile.
+    Handles PUT.
+    It updates a specified Profile.
+    :returns:
+    Noting. Status_200
+    Handles DELETE
+    Deletes a specified Profile
+    :returns:
+    Nothing
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
+    queryset = HandWeek.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = WeekSerializer
     lookup_field = 'id'
