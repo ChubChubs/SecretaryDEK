@@ -10,7 +10,7 @@ class Reviewer(models.Model):
     """
     id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
     name = models.CharField(null=False, max_length=100, verbose_name="Ім'я")
-    surname = models.CharField(null=False, max_length=100, verbose_name="Прізвище")
+    surname = models.CharField(null=False, max_length=100, verbose_name="Прізвище",unique=True)
     mname = models.CharField(null=False, max_length=100, verbose_name="По-батькові")
     passseries = models.CharField(null=True, max_length=5, verbose_name="Серія паспорта")
     passnum = models.IntegerField(null=True, verbose_name="Номер паспорта")
@@ -62,27 +62,53 @@ class Diploma(models.Model):
     """
     id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
     theme = models.TextField(max_length=512, verbose_name="Тема")
-    theme_eng = models.TextField(max_length=512, verbose_name="Тема англійською")
+    theme_eng = models.TextField(max_length=512, verbose_name="Тема англійською", blank=True)
     year = models.IntegerField(verbose_name="Рік")
     group = models.CharField(verbose_name='Група', max_length=30)
     reviewer = models.ForeignKey(Reviewer, related_name="Рецензент", blank=True, null=True, verbose_name="Рецензент",
-                                 db_constraint=False)
-    datereview = models.DateField(verbose_name='Дата рецензації')
+                                 db_constraint=False, to_field='surname')
+    datereview = models.DateField(verbose_name='Дата рецензації', blank=True)
     guide = models.ForeignKey(Reviewer, blank=True, null=True, related_name="Керівник", verbose_name="Керівник",
-                              db_constraint=False)
+                              db_constraint=False, to_field='surname')
     profile = models.ForeignKey(UserProfile, blank=True, null=True, verbose_name="Профіль шановного юзверя")
-    guidemark = models.IntegerField(verbose_name='Оцінка керівника')
-    pageswork = models.IntegerField(verbose_name='Клькість сторінок в записці')
-    pagespresentation = models.IntegerField(verbose_name='Кількість слайдів у презентації')
-    datehanding = models.DateField(verbose_name="Дата захисту")
-    type = models.BooleanField(verbose_name='Диплом-то червоний?')
-    fellowship = models.BooleanField(verbose_name='Рекомендований в аспірантуру?')
-    mark = models.IntegerField(verbose_name='Оцінка')
-    special_circumstances = models.BooleanField(verbose_name="Спец обставини. Достроковий захист і проч.")
+    guidemark = models.IntegerField(verbose_name='Оцінка керівника', blank=True)
+    pageswork = models.IntegerField(verbose_name='Клькість сторінок в записці', blank=True)
+    pagespresentation = models.IntegerField(verbose_name='Кількість слайдів у презентації', blank=True)
+    datehanding = models.DateField(verbose_name="Дата захисту", blank=True)
+    type = models.BooleanField(verbose_name='Диплом-то червоний?', blank=True)
+    fellowship = models.BooleanField(verbose_name='Рекомендований в аспірантуру?', blank=True)
+    mark = models.IntegerField(verbose_name='Оцінка', blank=True)
+    special_circumstances = models.NullBooleanField(verbose_name="Спец обставини. Достроковий захист і проч.")
 
 class HandWeek(models.Model):
+    """
+    An ORM for handing weeks.
+    Has a field for season, start and finis of diploma handing period
+    """
     id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
-    season = models.BooleanField(verbose_name='Зима?')
-    start = models.DateField(verbose_name="Початок захистів")
-    finish = models.DateField(verbose_name="Кінець захистів")
+    season = models.BooleanField(verbose_name='Зима?', blank=True)
+    start = models.DateField(verbose_name="Початок захистів", unique=True, blank=True)
+    finish = models.DateField(verbose_name="Кінець захистів", blank=True)
+
+class HandingDay(models.Model):
+    """
+    An ORM for a handing day.
+    Basically, it's for assigning a handing to a particular day.
+    Useful. Most of the time)
+    """
+    id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
+    week = models.ForeignKey(HandWeek, to_field='start', db_constraint=False)
+    date = models.DateField(verbose_name="День Захисту", blank=True)
+    start_time = models.TimeField(verbose_name="Час початку захистів", blank=True)
+    end_time = models.TimeField(verbose_name="Час кінця захистів", blank=True)
+
+class StudentsRestriction(models.Model):
+    """
+    Restriction for guides. If someone
+    has 5 places and takes 20 students, it's something bad. Isn't it?
+    """
+    id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
+    guide = models.ForeignKey(Reviewer, verbose_name="Керівник дипломок", db_constraint=False)
+    numberofstudents = models.IntegerField(verbose_name="Кількість студентів", blank=True)
+    handweek = models.ForeignKey(HandWeek, verbose_name="Тиждень захистів", to_field='start', db_constraint=False)
 
