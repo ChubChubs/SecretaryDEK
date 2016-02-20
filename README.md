@@ -10,9 +10,10 @@ just run
 sudo ./autoinstall.sh
 ````
 
-The suggested "proper way" to install all the requirements via pip is
-And to run the django from virtualenv. Heh)
-so the first thing to do with your python installation - is to get a virtualenv!
+The suggested "proper way" to install all the requirements via pip
+and to run the django from virtualenv. Heh)
+
+So the first thing to do with your python installation - is to get a virtualenv!
 (Tou might specify a version of pip and further virtualenv to run. Like pip3.4 or pip-2.7. or virtualenv-3.4)
 ````bash
 sudo pip install virtualenv
