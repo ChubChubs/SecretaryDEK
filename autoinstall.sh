@@ -6,7 +6,7 @@
 # Last Updated: 28-04-2015
 # ************************************************************
 
-if [ "`lsb_release -is`" == "Ubuntu" ] || [ "`lsb_release -is`" == "Debian" ]
+if [ "`lsb_release -is`" == "Ubuntu" ] || [ "`lsb_release -is`" == "Debian" ] [ "`lsb_release -is`" == "Mint" ]
 then
     sudo apt-get -y install python python-pip python-setuptools;
     sudo apt-get -y install python-dev git-core;
