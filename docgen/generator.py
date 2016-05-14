@@ -2,7 +2,10 @@ __author__ = 'masterbob'
 #from .models import Fields, Doc
 from docxtpl import DocxTemplate
 from importlib import import_module
-import time, datetime, os.path, sys
+import time
+import datetime
+import os.path
+import sys
 from django.conf import settings
 
 
