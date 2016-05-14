@@ -53,7 +53,7 @@ class UserProfile(models.Model):
     Boolean Field - registered
     login and password to be enhanced. Maybe.
     """
-    #id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
+    # id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
     bdate = models.DateField(verbose_name="Дата народження")
     user = models.ForeignKey(User)
     mname = models.CharField(null=False, max_length=100, verbose_name="По-батькові")

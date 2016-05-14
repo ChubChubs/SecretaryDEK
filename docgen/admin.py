@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import doc, fields
+from .models import Doc, Fields
 # Register your models here.
-admin.site.register(doc)
-admin.site.register(fields)
+admin.site.register(Doc)
+admin.site.register(Fields)
