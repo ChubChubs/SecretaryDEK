@@ -26,7 +26,7 @@
         </div>
         {% if user.is_authenticated %}
             <div class="col-xs-4">
-                <strong>Тест 2</strong>
+                <strong>{{ user.username }}</strong>
             </div>
             <!-- User's toolbar for authenticated users -->
             <div class="col-xs-2" id="user-toolbar">
@@ -55,7 +55,7 @@
     <!-- Start Footer -->
     <div class="row" id="footer">
         <div class="col-xs-12">
-            &copy; 2015
+            &copy; 2016
         </div>
     </div>
     <!-- End Footer -->
