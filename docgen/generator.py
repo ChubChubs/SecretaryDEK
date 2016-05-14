@@ -1,9 +1,8 @@
 __author__ = 'masterbob'
-
-from .models import fields,doc
+#from .models import Fields, Doc
 from docxtpl import DocxTemplate
 from importlib import import_module
-import time,datetime,os.path, sys
+import time, datetime, os.path, sys
 from django.conf import settings
 
 def gen_a_doc(doc_name, preparation_module = None):
