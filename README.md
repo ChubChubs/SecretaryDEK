@@ -54,6 +54,7 @@ And that's all! Your server must be up and running on http://127.0.0.1:8000/
 
 4.  В’юшка - для темплейтів.
     В ідеаі - інтерфейс через який можна закинути шаблон і агрегатор даних під нього.
+    http://labs.easyblog.it/bootstrap-list-filter/
 
 ###### Unit name: Бодя
 1.  Рефакторнути generator
