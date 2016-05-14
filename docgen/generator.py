@@ -5,6 +5,7 @@ from importlib import import_module
 import time, datetime, os.path, sys
 from django.conf import settings
 
+
 def gen_a_doc(doc_name, preparation_module = None):
     """
     :param doc_name:
@@ -19,17 +20,17 @@ def gen_a_doc(doc_name, preparation_module = None):
     An file name located in TMP_DEST
     """
     if preparation_module is None:
-        preparation_module = doc_name#+'.py'
+        preparation_module = doc_name # WOODOO MAGIC !!!!
     DOC_TEMPLATES_DIR = getattr(settings, "DOC_TEMPLATES_DIR", None)
     DOC_CONTEXT_GEN_DIR = getattr(settings, "DOC_CONTEXT_GEN_DIR", None)
     PROJECT_ROOT = getattr(settings, "PROJECT_ROOT", None)
     TMP_DEST = getattr(settings, "TMP_DEST", None)
     TMP_URL = getattr(settings, "TMP_URL", None)
 
-    doc = DocxTemplate(os.path.join(PROJECT_ROOT,os.path.join(DOC_TEMPLATES_DIR, doc_name+'.docx')))
-    print (os.path.join(PROJECT_ROOT, os.path.join(DOC_CONTEXT_GEN_DIR, preparation_module)))
+    doc = DocxTemplate(os.path.join(PROJECT_ROOT, os.path.join(DOC_TEMPLATES_DIR, doc_name+'.docx')))
+    print(os.path.join(PROJECT_ROOT, os.path.join(DOC_CONTEXT_GEN_DIR, preparation_module)))
     context_getter = import_module(preparation_module)
-    context = getattr(context_getter,"context")()
+    context = getattr(context_getter, "context")()
     doc.render(context)
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
