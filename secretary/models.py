@@ -16,10 +16,17 @@ class Reviewer(models.Model):
     passnum = models.IntegerField(null=True, verbose_name="Номер паспорта")
     idnum = models.CharField(max_length=13, null=True, verbose_name="Ідентифікаційний код")
     passplace = models.CharField(max_length=50, null=True, verbose_name="Ким виданий")
-    passdate = models.DateField(null=True, verbose_name="Коли виданий")
+    passdate = models.DateField(null=True, verbose_name="Коли виданий",blank=True)
+    bdate = models.DateField(null=True, verbose_name="Рік народження",blank=True)
+    children = models.IntegerField(null=True, verbose_name='Діти, шт.', blank=True)
     graduate = models.CharField(null=True, max_length=250, verbose_name="Освіта")
+    extra_graduate = models.CharField(null=True, max_length=10, verbose_name="Спеціальна освіта")
     edugrade = models.CharField(null=True, max_length=10, verbose_name="Вчене звання")
+    level = models.CharField(null=True, max_length=10, verbose_name="Науковий ступінь")
+    position = models.CharField(null=True, max_length=250, verbose_name="Посада")
     workplace = models.CharField(null=True, max_length=250, verbose_name="Місце роботи")
+    home = models.CharField(null=True, max_length=250, verbose_name="Місце проживання")
+    redundant_dude = models.NullBooleanField(verbose_name="Не з політехніки?")
     def __unicode__(self):
         return self.surname + ' ' + self.name
     def __str__(self):
@@ -49,6 +56,7 @@ class UserProfile(models.Model):
     #id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
     bdate = models.DateField(verbose_name="Дата народження")
     user = models.ForeignKey(User)
+    mname = models.CharField(null=False, max_length=100, verbose_name="По-батькові")
     entry2uni = models.DateField(verbose_name="Дата вступу в універ")
     registered = models.BooleanField(verbose_name="Валідний?")
     lector = models.BooleanField(verbose_name="Лектор?")
@@ -57,6 +65,8 @@ class UserProfile(models.Model):
         return self.user.last_name + ' ' + self.user.first_name
     def __str__(self):
         return self.user.last_name + ' ' + self.user.first_name
+    def full_name(self):
+        return self.user.last_name + ' ' + self.user.first_name + ' ' + self.mname
 
 
 class Diploma(models.Model):
