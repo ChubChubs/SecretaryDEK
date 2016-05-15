@@ -80,3 +80,4 @@ And that's all! Your server must be up and running on http://127.0.0.1:8000/
 9.  ???
 
 10.  PROFIT!
+11. Додати фріз тайм.

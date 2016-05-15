@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+
+{% block meta_title %} Add Task {% endblock meta_title %}
+
+{% block content %}
+    <div style="text-align: center;">
+        <h2 style="display: inline;">Список завдань:</h2>
+        <a href="" class="btn btn-primary" style="float: right">Додати завдання</a>
+    </div>
+    <img class="loader" src="/static/img/loader.gif">
+    <!-- Start Students Listing -->
+    <table class="table table-striped">
+        {% with order_by=request.GET.order_by reverse=request.GET.reverse %}
+            <thead>
+            <tr>
+                <th><a href="#">#</a></th>
+                <th>
+                    <a href="">
+                        Назва
+                    </a>
+                </th>
+                <th>
+                    <a href="">
+                        Замовник
+                    </a>
+                </th>
+                <th><a href="#">Статус</a></th>
+                <th><a href="#">Дата початку</a></th>
+                <th>
+                    <a href="">
+                        Дата закінчення
+                    </a>
+                </th>
+                <th><a href="#">Часу залишилось</a></th>
+                <th>Дії</th>
+            </tr>
+            </thead>
+        {% endwith %}
+        <tbody>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="" >{{ task.theme }}</a></td>
+                <td><a href="#">{{ task.theme_eng}}</a></td>
+                <td class="status">{{ task.group }}</td>
+                <td></td>
+                <td class="end"></td>
+                <td class="elapsed"></td>
+                <td>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle"
+                                data-toggle="dropdown">Дія
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="" class="task-edit-form-link">Редагувати</a></li>
+                            <li><a href="#">Змінити статус</a></li>
+                            <li><a href="">Видалити</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <!-- End Students Listing -->
+{% endblock content %}
