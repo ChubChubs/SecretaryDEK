@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Diploma, Reviewer, UserProfile, HandingDay, HandWeek,StudentsRestriction
+from .models import Diploma, Reviewer, Student, HandingDay, HandingPeriod,StudentsRestriction
+from  .models import General, Group, Chief, Commission
 
 """
 So these are admin models for django's default admin site.
@@ -11,8 +12,8 @@ class DiplomaAdmin(admin.ModelAdmin):
     list_display = ['theme', 'get_name', ]
 
     def get_name(self, obj):
-        return obj.profile.user.last_name + obj.profile.user.first_name
-    get_name.admin_order_field  = 'profile.user.last_name'  #Allows column order sorting
+        return obj.student.user.last_name + ' ' + obj.student.user.first_name
+    get_name.admin_order_field  = 'student.user.last_name'  #Allows column order sorting
     get_name.short_description = 'Author Name'  #Renames column head
 admin.site.register(Diploma, DiplomaAdmin)
 
@@ -22,25 +23,25 @@ class ReviewerAdmin(admin.ModelAdmin):
     list_display = ['get_name', ]
 
     def get_name(self, obj):
-        return obj.surname + ' ' + obj.name
-    get_name.admin_order_field  = 'surname'  #Allows column order sorting
+        return obj.user.last_name + ' ' + obj.user.first_name
+    get_name.admin_order_field  = 'user.last_name'  #Allows column order sorting
     get_name.short_description = 'Reviewer\'s Full Name'  #Renames column head
 admin.site.register(Reviewer, ReviewerAdmin)
 
 
-class UserProfileAdmin(admin.ModelAdmin):
-    model = UserProfile
-    list_display = ['get_name','registered', 'student', 'lector']
+class StudentAdmin(admin.ModelAdmin):
+    model = Student
+    list_display = ['get_name','group']
     def get_name(self, obj):
         return obj.user.last_name + ' ' + obj.user.first_name
     get_name.admin_order_field  = 'get_name'  #Allows column order sorting
     get_name.short_description = 'Student\'s Full Name'  #Renames column head
-admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.register(Student, StudentAdmin)
 
 class HandWeekAdmin(admin.ModelAdmin):
-    model = HandWeek
-    list_display = ['start','finish', 'season']
-admin.site.register(HandWeek)
+    model = HandingPeriod
+    list_display = ['start','end']
+admin.site.register(HandingPeriod)
 
 class HandingDayAdmin(admin.ModelAdmin):
     model = HandingDay
@@ -49,6 +50,33 @@ admin.site.register(HandingDay, HandingDayAdmin)
 
 class StudentsRestrictionAdmin(admin.ModelAdmin):
     model = StudentsRestriction
-    list_display = ['guide' , 'handweek', 'numberofstudents']
+    list_display = ['chief' , 'handingperiod', 'numberofstudents']
 admin.site.register(StudentsRestriction, StudentsRestrictionAdmin)
 # Register your models here.
+
+
+class GeneralAdmin(admin.ModelAdmin):
+    model = General
+    list_display = ['get_name', ]
+
+    def get_name(self, obj):
+        return obj.user.last_name + ' ' + obj.user.first_name
+    get_name.admin_order_field  = 'user.last_name'  #Allows column order sorting
+    get_name.short_description = 'Користувач'  #Renames column head
+admin.site.register(General, GeneralAdmin)
+
+class GroupAdmin(admin.ModelAdmin):
+    model = Group
+    list_display = ['name', ]
+admin.site.register(Group, GroupAdmin)
+
+
+class ChiefAdmin(admin.ModelAdmin):
+    model = Chief
+    list_display = ['get_name', ]
+
+    def get_name(self, obj):
+        return obj.user.last_name + ' ' + obj.user.first_name
+    get_name.admin_order_field  = 'user.last_name'  #Allows column order sorting
+    get_name.short_description = 'Керівник дипломних робіт'  #Renames column head
+admin.site.register(Chief, ChiefAdmin)
