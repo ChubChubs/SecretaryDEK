@@ -23,7 +23,8 @@ from secretary import views, urls as APIs
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.show_page, name='home'),
+    url('', include('django.contrib.auth.urls', namespace='auth')),
+    url(r'^$', login_required(views.show_page), name='home'),
     url(r'^users/logout/$', auth_views.logout, kwargs={'next_page': 'base'}, name='auth_logout'),
     url(r'^register/complete/$', RedirectView.as_view(pattern_name='base'), name='registration_complete'),
     url(r'^users/', include('registration.backends.simple.urls', namespace='users')),
