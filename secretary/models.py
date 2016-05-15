@@ -12,20 +12,20 @@ class Reviewer(models.Model):
     name = models.CharField(null=False, max_length=100, verbose_name="Ім'я")
     surname = models.CharField(null=False, max_length=100, verbose_name="Прізвище",unique=True)
     mname = models.CharField(null=False, max_length=100, verbose_name="По-батькові")
-    passseries = models.CharField(null=True, max_length=5, verbose_name="Серія паспорта")
-    passnum = models.IntegerField(null=True, verbose_name="Номер паспорта")
-    idnum = models.CharField(max_length=13, null=True, verbose_name="Ідентифікаційний код")
-    passplace = models.CharField(max_length=50, null=True, verbose_name="Ким виданий")
+    passseries = models.CharField(null=True, max_length=5, verbose_name="Серія паспорта",blank=True)
+    passnum = models.IntegerField(null=True, verbose_name="Номер паспорта",blank=True)
+    idnum = models.CharField(max_length=13, null=True, verbose_name="Ідентифікаційний код",blank=True)
+    passplace = models.CharField(max_length=50, null=True, verbose_name="Ким виданий",blank=True)
     passdate = models.DateField(null=True, verbose_name="Коли виданий",blank=True)
     bdate = models.DateField(null=True, verbose_name="Рік народження",blank=True)
     children = models.IntegerField(null=True, verbose_name='Діти, шт.', blank=True)
-    graduate = models.CharField(null=True, max_length=250, verbose_name="Освіта")
-    extra_graduate = models.CharField(null=True, max_length=10, verbose_name="Спеціальна освіта")
-    edugrade = models.CharField(null=True, max_length=10, verbose_name="Вчене звання")
-    level = models.CharField(null=True, max_length=10, verbose_name="Науковий ступінь")
-    position = models.CharField(null=True, max_length=250, verbose_name="Посада")
-    workplace = models.CharField(null=True, max_length=250, verbose_name="Місце роботи")
-    home = models.CharField(null=True, max_length=250, verbose_name="Місце проживання")
+    graduate = models.CharField(null=True, max_length=250, verbose_name="Освіта",blank=True)
+    extra_graduate = models.CharField(null=True, max_length=40, verbose_name="Спеціальна освіта",blank=True)
+    edugrade = models.CharField(null=True, max_length=10, verbose_name="Вчене звання",blank=True)
+    level = models.CharField(null=True, max_length=10, verbose_name="Науковий ступінь",blank=True)
+    position = models.CharField(null=True, max_length=250, verbose_name="Посада",blank=True)
+    workplace = models.CharField(null=True, max_length=250, verbose_name="Місце роботи",blank=True)
+    home = models.CharField(null=True, max_length=250, verbose_name="Місце проживання",blank=True)
     redundant_dude = models.NullBooleanField(verbose_name="Не з політехніки?")
     def __unicode__(self):
         return self.surname + ' ' + self.name
@@ -69,40 +69,6 @@ class UserProfile(models.Model):
         return self.user.last_name + ' ' + self.user.first_name + ' ' + self.mname
 
 
-class Diploma(models.Model):
-    """
-    Diplomas ORM. Contains many fields. Such as:
-    Theme, year, group, review date, guide mark,
-    number of pages in diploma, number of slides in the presentation
-    Diploma Mark, Graduation Date(datehanding)
-    Boolean Fields are type (is it a red diploma or NO) and fellowship
-    Foreign Keys are Reviewer and Guide
-    """
-    #id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
-    theme = models.TextField(max_length=512, verbose_name="Тема")
-    theme_eng = models.TextField(max_length=512, verbose_name="Тема англійською", blank=True)
-    year = models.IntegerField(verbose_name="Рік")
-    group = models.CharField(verbose_name='Група', max_length=30)
-    reviewer = models.ForeignKey(Reviewer, related_name="Рецензент", blank=True, null=True, verbose_name="Рецензент",
-                                 db_constraint=False, to_field='surname')
-    datereview = models.DateField(verbose_name='Дата рецензації', blank=True)
-    guide = models.ForeignKey(Reviewer, blank=True, null=True, related_name="Керівник", verbose_name="Керівник",
-                              db_constraint=False, to_field='surname')
-    profile = models.ForeignKey(UserProfile, blank=True, null=True, verbose_name="Профіль шановного юзверя")
-    guidemark = models.IntegerField(verbose_name='Оцінка керівника', blank=True)
-    pageswork = models.IntegerField(verbose_name='Клькість сторінок в записці', blank=True)
-    pagespresentation = models.IntegerField(verbose_name='Кількість слайдів у презентації', blank=True)
-    datehanding = models.DateField(verbose_name="Дата захисту", blank=True)
-    type = models.BooleanField(verbose_name='Диплом-то червоний?', blank=True)
-    fellowship = models.BooleanField(verbose_name='Рекомендований в аспірантуру?', blank=True)
-    mark = models.IntegerField(verbose_name='Оцінка', blank=True)
-    special_circumstances = models.NullBooleanField(verbose_name="Спец обставини. Достроковий захист і проч.")
-    def __unicode__(self):
-        return self.profile.user.last_name + ' ' + self.profile.user.last_name
-    def __str__(self):
-        return self.profile.user.last_name + ' ' + self.profile.user.last_name
-
-
 class HandWeek(models.Model):
     """
     An ORM for handing weeks.
@@ -113,9 +79,15 @@ class HandWeek(models.Model):
     start = models.DateField(verbose_name="Початок захистів", unique=True, blank=True)
     finish = models.DateField(verbose_name="Кінець захистів", blank=True)
     def __unicode__(self):
-        return self.start.isoformat()
+        if self.season == True:
+            return 'Зима ' + str(self.start.year)
+        else:
+            return 'Літо ' + str(self.start.year)
     def __str__(self):
-        return self.start.isoformat()
+        if self.season == True:
+            return 'Зима ' + str(self.start.year)
+        else:
+            return 'Літо ' + str(self.start.year)
 
 class HandingDay(models.Model):
     """
@@ -125,7 +97,7 @@ class HandingDay(models.Model):
     """
     #id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
     week = models.ForeignKey(HandWeek, to_field='start', db_constraint=False)
-    date = models.DateField(verbose_name="День Захисту", blank=True)
+    date = models.DateField(verbose_name="День Захисту", blank=True, unique=True)
     start_time = models.TimeField(verbose_name="Час початку захистів", blank=True)
     end_time = models.TimeField(verbose_name="Час кінця захистів", blank=True)
     def __unicode__(self):
@@ -147,3 +119,39 @@ class StudentsRestriction(models.Model):
         return self.guide.surname + ' ' + self.guide.name
     def __str__(self):
         return self.guide.surname + ' ' + self.guide.name
+
+
+class Diploma(models.Model):
+    """
+    Diplomas ORM. Contains many fields. Such as:
+    Theme, year, group, review date, guide mark,
+    number of pages in diploma, number of slides in the presentation
+    Diploma Mark, Graduation Date(datehanding)
+    Boolean Fields are type (is it a red diploma or NO) and fellowship
+    Foreign Keys are Reviewer and Guide
+    """
+    #id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
+    theme = models.TextField(max_length=512, verbose_name="Тема")
+    theme_eng = models.TextField(max_length=512, verbose_name="Тема англійською", blank=True)
+    group = models.CharField(verbose_name='Група', max_length=30)
+    reviewer = models.ForeignKey(Reviewer, related_name="Рецензент", blank=True, null=True, verbose_name="Рецензент",
+                                 db_constraint=False, to_field='surname')
+    datereview = models.DateField(verbose_name='Дата рецензації', blank=True)
+    guide = models.ForeignKey(Reviewer, blank=True, null=True, related_name="Керівник", verbose_name="Керівник",
+                              db_constraint=False, to_field='surname')
+    profile = models.ForeignKey(UserProfile, blank=True, null=True, verbose_name="Профіль шановного юзверя")
+    guidemark = models.IntegerField(verbose_name='Оцінка керівника', blank=True)
+    pageswork = models.IntegerField(verbose_name='Клькість сторінок в записці', blank=True)
+    pagespresentation = models.IntegerField(verbose_name='Кількість слайдів у презентації', blank=True)
+    datehanding = models.ForeignKey(HandingDay, to_field='date', verbose_name="Дата захисту")
+    type = models.BooleanField(verbose_name='Диплом-то червоний?', blank=True)
+    approval = models.BooleanField(verbose_name='Диплом-то зарев’юваний?', default=False)
+    fellowship = models.BooleanField(verbose_name='Рекомендований в аспірантуру?', blank=True)
+    mark = models.IntegerField(verbose_name='Оцінка', blank=True)
+    special_circumstances = models.NullBooleanField(verbose_name="Спец обставини. Достроковий захист і проч.")
+    def __unicode__(self):
+        return self.profile.user.last_name + ' ' + self.profile.user.last_name
+    def __str__(self):
+        return self.profile.user.last_name + ' ' + self.profile.user.last_name
+
+
