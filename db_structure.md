@@ -7,10 +7,10 @@ General   _Extends User_
 |       mname      |    entry2uni      |      position      | restriction   |    theme           |
 |       email      |     group         |      education     | education     |   theme_eng        |
 |       homeaddr   |     diploma       |      speceducation |speceducation  |   reviewer         |
-|  passportseries  |                   |academic status     | position      |   chief            |
+|  passportseries  |     User          |academic status     | position      |   chief            |
 |       birthday   |                   |  children          |academic status|   reviewermark     |
-|                  |                   |  workplace         |               |   chiefmark        |
-|                  |                   |                    |               |   commissionmark   |
+|      User        |                   |  workplace         |               |   chiefmark        |
+|                  |                   |  User              |    User       |   commissionmark   |
 |                  |                   |                    |               |   HandingDay       |
 |                  |                   |                    |               |   numberofpages    |
 |                  |                   |                    |               |   numberofslides   |
