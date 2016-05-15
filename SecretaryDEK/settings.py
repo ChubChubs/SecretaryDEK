@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'registration',
     'crispy_forms',
+    'schedule',
 )
 
 MIDDLEWARE_CLASSES = (

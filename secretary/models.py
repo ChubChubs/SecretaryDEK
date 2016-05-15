@@ -24,9 +24,9 @@ class Reviewer(models.Model):
     degree = models.CharField(null=True, max_length=10, verbose_name="Науковий ступінь",blank=True)
     position = models.CharField(null=True, max_length=250, verbose_name="Посада",blank=True)
     workplace = models.CharField(null=True, max_length=250, verbose_name="Місце роботи",blank=True)
-
     def __str__(self):
-        return self.surname + ' ' + self.name
+        return self.user.last_name + ' ' + self.user.first_name
+
 
 class Chief(models.Model):
     """
@@ -38,6 +38,8 @@ class Chief(models.Model):
     academic_status = models.CharField(null=True, max_length=10, verbose_name="Вчене звання",blank=True)
     degree = models.CharField(null=True, max_length=10, verbose_name="Науковий ступінь",blank=True)
     position = models.CharField(null=True, max_length=250, verbose_name="Посада",blank=True)
+    def __str__(self):
+        return self.user.last_name + ' ' + self.user.first_name
 
 
 class General(models.Model):
@@ -68,7 +70,6 @@ class General(models.Model):
         return self.user.last_name + ' ' + self.user.first_name[0] + '.' + self.mname[0] + '.'
 
 
-
 class Student(models.Model):
     """
 
@@ -76,7 +77,7 @@ class Student(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     entry2uni = models.DateField(verbose_name="Дата вступу в універ")
     group = models.ForeignKey(Group)
-    diploma = models.OneToOneField(Diploma)
+
 
 
 class Diploma(models.Model):
@@ -89,23 +90,49 @@ class Diploma(models.Model):
     Foreign Keys are Reviewer and Guide
     """
     # id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
+    student = models.OneToOneField(Student)
     theme = models.TextField(max_length=512, verbose_name="Тема")
     theme_eng = models.TextField(max_length=512, verbose_name="Тема англійською", blank=True)
     group = models.ForeignKey(Group)
     reviewer = models.ForeignKey(Reviewer, related_name="Рецензент", blank=True, null=True, verbose_name="Рецензент",
-                                 db_constraint=False, to_field='surname')
+                                 db_constraint=False)
     datereview = models.DateField(verbose_name='Дата рецензації', blank=True)
     chief = models.ForeignKey(Chief, blank=True, null=True, related_name="Керівник", verbose_name="Керівник",
-                              db_constraint=False, to_field='surname')
-    guidemark = models.IntegerField(verbose_name='Оцінка керівника', blank=True)
-    pageswork = models.IntegerField(verbose_name='Клькість сторінок в записці', blank=True)
-    pagespresentation = models.IntegerField(verbose_name='Кількість слайдів у презентації', blank=True)
-    datehanding = models.ForeignKey(HandingDay, to_field='date', verbose_name="Дата захисту")
+                              db_constraint=False)
+    chiefmark = models.IntegerField(verbose_name='Оцінка керівника', blank=True)
+    numberofpages = models.IntegerField(verbose_name='Клькість сторінок в записці', blank=True)
+    numberofslides = models.IntegerField(verbose_name='Кількість слайдів у презентації', blank=True)
+    handingdate = models.ForeignKey(HandingDay, to_field='date', verbose_name="Дата захисту")
     type = models.BooleanField(verbose_name='Диплом-то червоний?', blank=True)
     approval = models.BooleanField(verbose_name='Диплом-то зарев’юваний?', default=False)
     fellowship = models.BooleanField(verbose_name='Рекомендований в аспірантуру?', blank=True)
-    mark = models.IntegerField(verbose_name='Оцінка', blank=True)
+    commissionmark = models.IntegerField(verbose_name='Оцінка', blank=True)
     special_circumstances = models.NullBooleanField(verbose_name="Спец обставини. Достроковий захист і проч.")
 
     def __str__(self):
-        return self.profile.user.last_name + ' ' + self.profile.user.last_name
+        return self.student.user.last_name + ' ' + self.student.user.first_name
+
+
+
+class StudentsRestriction(models.Model):
+    """
+    Restriction for guides. If someone
+    has 5 places and takes 20 students, it's something bad. Isn't it?
+    """
+    # id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
+    chief = models.ForeignKey(Chief, verbose_name="Керівник дипломок", db_constraint=False)
+    numberofstudents = models.IntegerField(verbose_name="Кількість студентів", blank=True)
+    handingperiod = models.ForeignKey(HandingPeriod, verbose_name="Тиждень захистів", to_field='start', db_constraint=False)
+
+    def __str__(self):
+        return self.chief.user.last_name + ' ' + self.chief.user.first_name
+
+
+class Commission(models.Model):
+    handingday = models.OneToOneField(HandingDay,to_field='date', primary_key=True)
+    chairman = models.ForeignKey(Chief, blank=True, null=True, related_name='chairman')
+    commissioner1 = models.ForeignKey(Chief, blank=True, null=True, related_name='comm1')
+    commissioner2 = models.ForeignKey(Chief, blank=True, null=True, related_name='comm2')
+    commissioner3 = models.ForeignKey(Chief, blank=True, null=True, related_name='comm3')
+    commissioner4 = models.ForeignKey(Chief, blank=True, null=True, related_name='comm4')
+    commissioner5 = models.ForeignKey(Chief, blank=True, null=True, related_name='comm5')
