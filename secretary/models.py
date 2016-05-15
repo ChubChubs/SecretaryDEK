@@ -111,12 +111,14 @@ class StudentsRestriction(models.Model):
     Restriction for guides. If someone
     has 5 places and takes 20 students, it's something bad. Isn't it?
     """
-    #id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
+    # id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
     guide = models.ForeignKey(Reviewer, verbose_name="Керівник дипломок", db_constraint=False)
     numberofstudents = models.IntegerField(verbose_name="Кількість студентів", blank=True)
     handweek = models.ForeignKey(HandWeek, verbose_name="Тиждень захистів", to_field='start', db_constraint=False)
+
     def __unicode__(self):
         return self.guide.surname + ' ' + self.guide.name
+
     def __str__(self):
         return self.guide.surname + ' ' + self.guide.name
 
@@ -149,8 +151,10 @@ class Diploma(models.Model):
     fellowship = models.BooleanField(verbose_name='Рекомендований в аспірантуру?', blank=True)
     mark = models.IntegerField(verbose_name='Оцінка', blank=True)
     special_circumstances = models.NullBooleanField(verbose_name="Спец обставини. Достроковий захист і проч.")
+
     def __unicode__(self):
         return self.profile.user.last_name + ' ' + self.profile.user.last_name
+
     def __str__(self):
         return self.profile.user.last_name + ' ' + self.profile.user.last_name
 
