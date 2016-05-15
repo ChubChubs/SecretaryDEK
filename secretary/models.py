@@ -1,117 +1,82 @@
 from django.db import models
 from django.contrib.auth.models import User
+from schedule.models import HandingDay, HandingPeriod
 # Create your models here.
 
 # For UserType we using builtin model User, that contain authorization and authentication
+class Group(models.Model):
+    """
+    Dummy group purposed mostly for dropdowns
+    """
+    name = models.CharField(verbose_name="Група",max_length=40)
+
 
 class Reviewer(models.Model):
     """
     Reviewer ORM. Holds typical name, surname, mname and a ID. For now.
     """
     # id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
-    name = models.CharField(null=False, max_length=100, verbose_name="Ім'я")
-    surname = models.CharField(null=False, max_length=100, verbose_name="Прізвище",unique=True)
-    mname = models.CharField(null=False, max_length=100, verbose_name="По-батькові")
-    passseries = models.CharField(null=True, max_length=5, verbose_name="Серія паспорта",blank=True)
-    passnum = models.IntegerField(null=True, verbose_name="Номер паспорта",blank=True)
-    idnum = models.CharField(max_length=13, null=True, verbose_name="Ідентифікаційний код",blank=True)
-    passplace = models.CharField(max_length=50, null=True, verbose_name="Ким виданий",blank=True)
-    passdate = models.DateField(null=True, verbose_name="Коли виданий",blank=True)
-    bdate = models.DateField(null=True, verbose_name="Рік народження",blank=True)
+    user = models.OneToOneField(User, primary_key=True)
     children = models.IntegerField(null=True, verbose_name='Діти, шт.', blank=True)
-    graduate = models.CharField(null=True, max_length=250, verbose_name="Освіта",blank=True)
-    extra_graduate = models.CharField(null=True, max_length=40, verbose_name="Спеціальна освіта",blank=True)
-    edugrade = models.CharField(null=True, max_length=10, verbose_name="Вчене звання",blank=True)
-    level = models.CharField(null=True, max_length=10, verbose_name="Науковий ступінь",blank=True)
+    education = models.CharField(null=True, max_length=250, verbose_name="Освіта",blank=True)
+    special_education = models.CharField(null=True, max_length=40, verbose_name="Спеціальна освіта",blank=True)
+    academic_status = models.CharField(null=True, max_length=10, verbose_name="Вчене звання",blank=True)
+    degree = models.CharField(null=True, max_length=10, verbose_name="Науковий ступінь",blank=True)
     position = models.CharField(null=True, max_length=250, verbose_name="Посада",blank=True)
     workplace = models.CharField(null=True, max_length=250, verbose_name="Місце роботи",blank=True)
-    home = models.CharField(null=True, max_length=250, verbose_name="Місце проживання",blank=True)
-    redundant_dude = models.NullBooleanField(verbose_name="Не з політехніки?")
 
     def __str__(self):
         return self.surname + ' ' + self.name
-'''
-class Guide(models.Model):
-    """
-    Guideman ORM. Holds typical name, surname, mname and a ID. For now.
-    """
-    id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True)
-    name = models.CharField(null=False, max_length=100)
-    surname = models.CharField(null=False, max_length=100)
-    mname = models.CharField(null=False, max_length=100)
 
-# TODO: Create application "Account", that contain all information about user, login, logout, session.
-
-'''
-class UserProfile(models.Model):
+class Chief(models.Model):
     """
-    User ORM. Foreign key - UserType.
+    Diploma Chief ORM. Holds typical name, surname, mname and a ID. For now.
+    """
+    user = models.OneToOneField(User, primary_key=True)
+    education = models.CharField(null=True, max_length=250, verbose_name="Освіта",blank=True)
+    special_education = models.CharField(null=True, max_length=40, verbose_name="Спеціальна освіта",blank=True)
+    academic_status = models.CharField(null=True, max_length=10, verbose_name="Вчене звання",blank=True)
+    degree = models.CharField(null=True, max_length=10, verbose_name="Науковий ступінь",blank=True)
+    position = models.CharField(null=True, max_length=250, verbose_name="Посада",blank=True)
+
+
+class General(models.Model):
+    """
+    User extention ORM. Foreign key - UserType.
     ID == PK
     Standard fields are in the User Model
     Date Fields - bdate (Birth) and entry2uni
     Boolean Field - registered
-    login and password to be enhanced. Maybe.
     """
     # id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
+    user = models.OneToOneField(User, primary_key=True)
     bdate = models.DateField(verbose_name="Дата народження")
-    user = models.ForeignKey(User)
     mname = models.CharField(null=False, max_length=100, verbose_name="По-батькові")
-    entry2uni = models.DateField(verbose_name="Дата вступу в універ")
+    home = models.CharField(null=True, max_length=250, verbose_name="Місце проживання",blank=True)
+    passseries = models.CharField(null=True, max_length=5, verbose_name="Серія паспорта",blank=True)
+    passnum = models.IntegerField(null=True, verbose_name="Номер паспорта",blank=True)
+    passplace = models.CharField(max_length=50, null=True, verbose_name="Ким виданий",blank=True)
+    passdate = models.DateField(null=True, verbose_name="Коли виданий",blank=True)
+    idnum = models.CharField(max_length=13, null=True, verbose_name="Ідентифікаційний код",blank=True)
     registered = models.BooleanField(verbose_name="Валідний?")
-    lector = models.BooleanField(verbose_name="Лектор?")
-    student = models.BooleanField(verbose_name="Штюдент?")
 
     def __str__(self):
         return self.user.last_name + ' ' + self.user.first_name
-
     def full_name(self):
         return self.user.last_name + ' ' + self.user.first_name + ' ' + self.mname
+    def full_name_abbreviated(self):
+        return self.user.last_name + ' ' + self.user.first_name[0] + '.' + self.mname[0] + '.'
 
 
-class HandWeek(models.Model):
+
+class Student(models.Model):
     """
-    An ORM for handing weeks.
-    Has a field for season, start and finis of diploma handing period
+
     """
-    # id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
-    season = models.BooleanField(verbose_name='Зима?', blank=True)
-    start = models.DateField(verbose_name="Початок захистів", unique=True, blank=True)
-    finish = models.DateField(verbose_name="Кінець захистів", blank=True)
-
-    def __str__(self):
-        if self.season:
-            return 'Зима ' + str(self.start.year)
-        else:
-            return 'Літо ' + str(self.start.year)
-
-class HandingDay(models.Model):
-    """
-    An ORM for a handing day.
-    Basically, it's for assigning a handing to a particular day.
-    Useful. Most of the time)
-    """
-    # id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
-    week = models.ForeignKey(HandWeek, to_field='start', db_constraint=False)
-    date = models.DateField(verbose_name="День Захисту", blank=True, unique=True)
-    start_time = models.TimeField(verbose_name="Час початку захистів", blank=True)
-    end_time = models.TimeField(verbose_name="Час кінця захистів", blank=True)
-
-    def __str__(self):
-        return self.date.isoformat()
-
-
-class StudentsRestriction(models.Model):
-    """
-    Restriction for guides. If someone
-    has 5 places and takes 20 students, it's something bad. Isn't it?
-    """
-    # id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
-    guide = models.ForeignKey(Reviewer, verbose_name="Керівник дипломок", db_constraint=False)
-    numberofstudents = models.IntegerField(verbose_name="Кількість студентів", blank=True)
-    handweek = models.ForeignKey(HandWeek, verbose_name="Тиждень захистів", to_field='start', db_constraint=False)
-
-    def __str__(self):
-        return self.guide.surname + ' ' + self.guide.name
+    user = models.OneToOneField(User, primary_key=True)
+    entry2uni = models.DateField(verbose_name="Дата вступу в універ")
+    group = models.ForeignKey(Group)
+    diploma = models.OneToOneField(Diploma)
 
 
 class Diploma(models.Model):
@@ -126,13 +91,12 @@ class Diploma(models.Model):
     # id = models.IntegerField(verbose_name='Id',primary_key=True, unique=True, db_index=True, auto_created=True)
     theme = models.TextField(max_length=512, verbose_name="Тема")
     theme_eng = models.TextField(max_length=512, verbose_name="Тема англійською", blank=True)
-    group = models.CharField(verbose_name='Група', max_length=30)
+    group = models.ForeignKey(Group)
     reviewer = models.ForeignKey(Reviewer, related_name="Рецензент", blank=True, null=True, verbose_name="Рецензент",
                                  db_constraint=False, to_field='surname')
     datereview = models.DateField(verbose_name='Дата рецензації', blank=True)
-    guide = models.ForeignKey(Reviewer, blank=True, null=True, related_name="Керівник", verbose_name="Керівник",
+    chief = models.ForeignKey(Chief, blank=True, null=True, related_name="Керівник", verbose_name="Керівник",
                               db_constraint=False, to_field='surname')
-    profile = models.ForeignKey(UserProfile, blank=True, null=True, verbose_name="Профіль шановного юзверя")
     guidemark = models.IntegerField(verbose_name='Оцінка керівника', blank=True)
     pageswork = models.IntegerField(verbose_name='Клькість сторінок в записці', blank=True)
     pagespresentation = models.IntegerField(verbose_name='Кількість слайдів у презентації', blank=True)
