@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% load crispy_forms_tags %}
-
+{% block extra_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+{% endblock extra_css %}
 {% block meta_title %} TaskKiller {% endblock meta_title %}
 
 {% block content %}
@@ -12,3 +14,7 @@
     {% crispy form %}
 
 {% endblock content %}
+
+{% block extra_javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+{% endblock extra_javascript %}

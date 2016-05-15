@@ -26,7 +26,8 @@ SECRET_KEY = 'iud7t#!r$919sx5ti!5f+#4=fglp!tm6pwga6u2&)3203naju0'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+# Crispy form
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Application definition
 
