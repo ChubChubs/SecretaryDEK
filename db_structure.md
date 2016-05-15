@@ -1,25 +1,26 @@
 
 # App: Secretary
 General   _Extends User_
-|   **General**    |    **Student**    |    **Reviewer**    |   **Chief**   |   **Diploma**    |
-|------------------|-------------------|--------------------|---------------|------------------|
-|       mname      |    entry2uni      |      position      | restriction   |    theme         |
-|       email      |     group         |      education     | education     |   theme_eng      |
-|       homeaddr   |     diploma       |      speceducation |speceducation  |   reviewer       |
-|  passportseries  |                   |academic status     | position      |   chief          |
-|       birthday   |                   |  children          |academic status|   reviewermark   |
-|                  |                   |  workplace         |               |   chiefmark      |
-|                  |                   |                    |               |   commissionmark |
-|                  |                   |                    |               |   HandingDay     |
-|                  |                   |                    |               |   numberofpages  |
-|                  |                   |                    |               |   numberofslides |
-|                  |                   |                    |               |   type           |
-|                  |                   |                    |               |   fellowship     |
-|                  |                   |                    |               |   specialcircumstances|
-|                  |                   |                    |               |                  |
-|                  |                   |                    |               |                  |
-|                  |                   |                    |               |                  |
-|                  |                   |                    |               |                  |
+
+|   **General**    |    **Student**    |    **Reviewer**    |   **Chief**   |   **Diploma**      |
+|------------------|-------------------|--------------------|---------------|--------------------|
+|       mname      |    entry2uni      |      position      | restriction   |    theme           |
+|       email      |     group         |      education     | education     |   theme_eng        |
+|       homeaddr   |     diploma       |      speceducation |speceducation  |   reviewer         |
+|  passportseries  |                   |academic status     | position      |   chief            |
+|       birthday   |                   |  children          |academic status|   reviewermark     |
+|                  |                   |  workplace         |               |   chiefmark        |
+|                  |                   |                    |               |   commissionmark   |
+|                  |                   |                    |               |   HandingDay       |
+|                  |                   |                    |               |   numberofpages    |
+|                  |                   |                    |               |   numberofslides   |
+|                  |                   |                    |               |   type             |
+|                  |                   |                    |               |   fellowship       |
+|                  |                   |                    |               |specialcircumstances|
+|                  |                   |                    |               |                    |
+|                  |                   |                    |               |                    |
+|                  |                   |                    |               |                    |
+|                  |                   |                    |               |                    |
 
 
 # App: Schedule
