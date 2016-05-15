@@ -27,6 +27,7 @@ General   _Extends User_
 |    **HandingPeriod**    |    **HandingDay**    |    **Comission**    |    **Restriction**    |
 |:-----------------------:|:--------------------:|:-------------------:|:---------------------:|
 |     start               |     date             |      HandingDay     |     Reviewer          |
-|     end                 |     start_time       | HandingPeriod       |     Number of students|
+|     end                 |     start_time       |                     |     Number of students|
 |                         |     end_time         | Chairman            |     HandingPeriod     |
 |                         |     room             | Others(4-6 men)     |                       |
+|                         |     HandingPeriodf   |                     |                       |
