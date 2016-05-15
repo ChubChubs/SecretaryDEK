@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block meta_title %} TaskKiller {% endblock meta_title %}
+
+{% block content %}
+
+    <div class="page-header">
+        <h2 class="form_header">Додати роботу</h2>
+    </div>
+    {% crispy form %}
+
+{% endblock content %}

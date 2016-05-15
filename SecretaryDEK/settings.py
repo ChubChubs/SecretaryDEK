@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'docgen',
     'rest_framework.authtoken',
     'registration',
+    'crispy_forms',
 )
 
 MIDDLEWARE_CLASSES = (

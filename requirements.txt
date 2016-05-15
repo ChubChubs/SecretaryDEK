@@ -3,3 +3,4 @@ django-registration-redux==1.2
 djangorestframework
 docxtpl
 simplejson
+django-crispy-forms
