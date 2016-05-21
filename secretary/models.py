@@ -8,6 +8,8 @@ class Group(models.Model):
     """
     Dummy group purposed mostly for dropdowns
     """
+    id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True,
+                             auto_created=True, blank=True)
     name = models.CharField(verbose_name="Група",max_length=40)
 
 
@@ -15,7 +17,7 @@ class Reviewer(models.Model):
     """
     Reviewer ORM. Holds typical name, surname, mname and a ID. For now.
     """
-    # id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
+    id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
     user = models.OneToOneField(User, primary_key=True)
     children = models.IntegerField(null=True, verbose_name='Діти, шт.', blank=True)
     education = models.CharField(null=True, max_length=250, verbose_name="Освіта",blank=True)
@@ -32,6 +34,8 @@ class Chief(models.Model):
     """
     Diploma Chief ORM. Holds typical name, surname, mname and a ID. For now.
     """
+    id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True,
+                             auto_created=True, blank=True)
     user = models.OneToOneField(User, primary_key=True)
     education = models.CharField(null=True, max_length=250, verbose_name="Освіта",blank=True)
     special_education = models.CharField(null=True, max_length=40, verbose_name="Спеціальна освіта",blank=True)

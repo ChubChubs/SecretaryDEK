@@ -278,7 +278,7 @@ class ChiefView(generics.ListCreateAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
-    queryset = Student.objects.all()
+    queryset = Chief.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = ChiefSerializer
     lookup_field = 'id'
@@ -300,7 +300,7 @@ class ChiefUpd(generics.RetrieveUpdateDestroyAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
-    queryset = Student.objects.all()
+    queryset = Chief.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = ChiefSerializer
     lookup_field = 'id'
@@ -462,4 +462,44 @@ class StudentsRestrictionsUpd(generics.RetrieveUpdateDestroyAPIView):
     queryset = Student.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = StudentsRestictionSerializer
+    lookup_field = 'id'
+
+
+class UsersView(generics.ListCreateAPIView):
+    """
+    API for reviewers.
+    Handles GET
+    :returns:
+    All reviewers
+    Handles POST
+    :returns:
+    A JSON with applied data in it.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+    queryset = User.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = UserSerializer
+    lookup_field = 'id'
+
+
+class UsersUpd(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Handles GET
+    :returns:
+    A specified Reviewer.
+    Handles PUT.
+    It updates a specified Reviewer.
+    :returns:
+    Noting. Status_200
+    Handles DELETE
+    Deletes a specified Reviewer
+    :returns:
+    Nothing
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated, IsAdminUser)
+    queryset = User.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = UserSerializer
     lookup_field = 'id'

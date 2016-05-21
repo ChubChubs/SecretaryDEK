@@ -1,5 +1,3 @@
-__author__ = 'masterbob'
-
 
 __author__ = 'masterbob'
 """
