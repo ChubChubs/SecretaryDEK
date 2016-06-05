@@ -76,7 +76,7 @@ class ChiefAdmin(admin.ModelAdmin):
     list_display = ['get_name', ]
 
     def get_name(self, obj):
-        return obj.user.last_name + ' ' + obj.user.first_name
+        return obj.user.last_name + ' ' + obj.user.first_name + ' ' + obj.user.general.mname
     get_name.admin_order_field  = 'user.last_name'  #Allows column order sorting
     get_name.short_description = 'Керівник дипломних робіт'  #Renames column head
 admin.site.register(Chief, ChiefAdmin)

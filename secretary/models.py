@@ -22,13 +22,15 @@ class Group(models.Model):
     )
     spec = models.CharField(verbose_name="напрямок (Бакалавр, Спеціаліст чи Магістр)",max_length=40, choices=choices,
                             default="Бакалавр")
-
+    def __str__(self):
+        return self.name
 
 class Reviewer(models.Model):
     """
     Reviewer ORM. Holds typical name, surname, mname and a ID. For now.
     """
-    id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
+    #id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True,
+    #                         blank=True)
     user = models.OneToOneField(User, primary_key=True)
     children = models.IntegerField(null=True, verbose_name='Діти, шт.', blank=True)
     education = models.CharField(null=True, max_length=250, verbose_name="Освіта",blank=True)
@@ -45,8 +47,8 @@ class Chief(models.Model):
     """
     Diploma Chief ORM. Holds typical name, surname, mname and a ID. For now.
     """
-    id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True,
-                             auto_created=True, blank=True)
+    #id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True,
+    #                         auto_created=True, blank=True)
     user = models.OneToOneField(User, primary_key=True)
     education = models.CharField(null=True, max_length=250, verbose_name="Освіта",blank=True)
     special_education = models.CharField(null=True, max_length=40, verbose_name="Спеціальна освіта",blank=True)
@@ -67,7 +69,7 @@ class General(models.Model):
     """
     # id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
     user = models.OneToOneField(User, primary_key=True)
-    bdate = models.DateField(verbose_name="Дата народження")
+    bdate = models.DateField(null=True, verbose_name="Дата народження", blank=True)
     mname = models.CharField(null=False, max_length=100, verbose_name="По-батькові")
     home = models.CharField(null=True, max_length=250, verbose_name="Місце проживання",blank=True)
     passseries = models.CharField(null=True, max_length=5, verbose_name="Серія паспорта",blank=True)
@@ -92,7 +94,8 @@ class Student(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     entry2uni = models.DateField(verbose_name="Дата вступу в універ")
     group = models.ForeignKey(Group)
-
+    def __str__(self):
+        return self.user.last_name + ' ' + self.user.first_name
 
 
 class Diploma(models.Model):
@@ -114,14 +117,14 @@ class Diploma(models.Model):
     datereview = models.DateField(verbose_name='Дата рецензації', blank=True)
     chief = models.ForeignKey(Chief, blank=True, null=True, related_name="Керівник", verbose_name="Керівник",
                               db_constraint=False)
-    chiefmark = models.IntegerField(verbose_name='Оцінка керівника', blank=True)
-    numberofpages = models.IntegerField(verbose_name='Клькість сторінок в записці', blank=True)
-    numberofslides = models.IntegerField(verbose_name='Кількість слайдів у презентації', blank=True)
-    handingdate = models.ForeignKey(HandingDay, to_field='date', verbose_name="Дата захисту")
-    type = models.BooleanField(verbose_name='Диплом-то червоний?', blank=True)
-    approval = models.BooleanField(verbose_name='Диплом-то зарев’юваний?', default=False)
-    fellowship = models.BooleanField(verbose_name='Рекомендований в аспірантуру?', blank=True)
-    commissionmark = models.IntegerField(verbose_name='Оцінка', blank=True)
+    chiefmark = models.IntegerField(null=True, verbose_name='Оцінка керівника', blank=True)
+    numberofpages = models.IntegerField(null=True, verbose_name='Клькість сторінок в записці', blank=True)
+    numberofslides = models.IntegerField(null=True, verbose_name='Кількість слайдів у презентації', blank=True)
+    handingdate = models.ForeignKey(HandingDay, to_field='date', verbose_name="Дата захисту", null=True,blank=True,)
+    type = models.BooleanField( verbose_name='Диплом-то червоний?', blank=True)
+    approval = models.BooleanField( verbose_name='Диплом-то зарев’юваний?', default=False)
+    fellowship = models.BooleanField( verbose_name='Рекомендований в аспірантуру?', blank=True)
+    commissionmark = models.IntegerField(null=True, verbose_name='Оцінка', blank=True)
     special_circumstances = models.NullBooleanField(verbose_name="Спец обставини. Достроковий захист і проч.")
     number = models.IntegerField(verbose_name="Номер диплому в архіві",unique=True, blank=True, null=True)
 

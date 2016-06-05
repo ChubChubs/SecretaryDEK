@@ -144,7 +144,7 @@ class ExampleView(APIView):
     renderer_classes = (JSONRenderer, )
 
     def get(self, request, format=None):
-        item = generator.gen_a_doc("doc")
+        item = generator.gen_a_doc("barchelor_list")
         content = {
             "unicode black star": "★",
             "value": 999,
