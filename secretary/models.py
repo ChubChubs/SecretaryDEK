@@ -11,6 +11,17 @@ class Group(models.Model):
     id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True,
                              auto_created=True, blank=True)
     name = models.CharField(verbose_name="Група",max_length=40)
+    barchelor = "бакалавр"
+    specialist = "спеціаліст"
+    phd = "магістр"
+    maigster = phd
+    choices = (
+        (barchelor, "Бакалавр"),
+        (specialist, "Спеціаліст"),
+        (phd, "Магістр")
+    )
+    spec = models.CharField(verbose_name="напрямок (Бакалавр, Спеціаліст чи Магістр)",max_length=40, choices=choices,
+                            default="Бакалавр")
 
 
 class Reviewer(models.Model):
@@ -112,6 +123,7 @@ class Diploma(models.Model):
     fellowship = models.BooleanField(verbose_name='Рекомендований в аспірантуру?', blank=True)
     commissionmark = models.IntegerField(verbose_name='Оцінка', blank=True)
     special_circumstances = models.NullBooleanField(verbose_name="Спец обставини. Достроковий захист і проч.")
+    number = models.IntegerField(verbose_name="Номер диплому в архіві",unique=True, blank=True, null=True)
 
     def __str__(self):
         return self.student.user.last_name + ' ' + self.student.user.first_name

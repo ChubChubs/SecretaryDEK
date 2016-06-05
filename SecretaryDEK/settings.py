@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'registration',
     'crispy_forms',
     'schedule',
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (
