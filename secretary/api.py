@@ -31,7 +31,7 @@ class StudentsRestictionSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Group
-        fields = ('id', 'chief', 'numberofstudents', 'handingperiod')
+        fields = ( 'chief', 'numberofstudents', 'handingperiod')
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -40,7 +40,7 @@ class GroupSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Group
-        fields = ('id', 'name')
+        fields = ( 'name')
 
 
 class CommissionSerilizer(serializers.ModelSerializer):
@@ -49,7 +49,7 @@ class CommissionSerilizer(serializers.ModelSerializer):
     """
     class Meta:
         model = Commission
-        fields = ('id', 'handingday', 'chairman', 'commissioner1', 'commissioner2', 'ommissioner3',
+        fields = ( 'handingday', 'chairman', 'commissioner1', 'commissioner2', 'ommissioner3',
                   'commissioner4', 'commissioner5' ,)
 
 class ChiefSerializer(serializers.ModelSerializer):
@@ -58,7 +58,7 @@ class ChiefSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Chief
-        fields = ('id', 'user', 'education', 'special_education', 'academic_status', 'degree', 'position')
+        fields = ( 'user', 'education', 'special_education', 'academic_status', 'degree', 'position')
 
 class GeneralSerializer(serializers.ModelSerializer):
     """
@@ -74,7 +74,7 @@ class DiplomaSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Diploma
-        fields = ('theme', 'theme_eng', 'year', 'group', 'reviewer', 'datereview', 'chief', 'chiefmark',
+        fields = ('theme', 'theme_eng', 'group', 'reviewer', 'datereview', 'chief', 'chiefmark',
                   'numberofpages', 'numberofslides', 'handingdate', 'type', 'fellowship', 'commissionmark', )
 
 
@@ -93,7 +93,7 @@ class ReviewerSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Reviewer
-        fields = ('id', 'name', 'mname', 'surname', )
+        fields = ( 'name', 'mname', 'surname', )
 
 ''
 class StudentSerializer(serializers.ModelSerializer):
@@ -102,7 +102,7 @@ class StudentSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Student
-        fields = ('id', 'user', 'entry2uni', 'group', )
+        fields = ( 'user', 'entry2uni', 'group', )
 
 
 
