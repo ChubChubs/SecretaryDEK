@@ -66,7 +66,8 @@ class GeneralSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = General
-        fields = ('user','bdate','mname','home','passseries','passnum','passplace' ,'passdate','idnum','registered',)
+        fields = ('user', 'bdate', 'mname', 'home', 'passseries', 'passnum', 'passplace' , 'passdate', 'idnum',
+                  'registered',)
 
 class DiplomaSerializer(serializers.ModelSerializer):
     """
@@ -93,9 +94,8 @@ class ReviewerSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Reviewer
-        fields = ( 'name', 'mname', 'surname', )
+        fields = ( 'user', 'children', 'education', 'special_education', 'academic_status', 'degree', 'position', 'workplace')
 
-''
 class StudentSerializer(serializers.ModelSerializer):
     """
     For Profile. Simply. Chunky. Exploitable!
@@ -319,7 +319,7 @@ class GeneralView(generics.ListCreateAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
-    queryset = Student.objects.all()
+    queryset = General.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = GeneralSerializer
     lookup_field = 'id'

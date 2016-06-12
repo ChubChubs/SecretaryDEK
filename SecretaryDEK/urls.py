@@ -19,6 +19,7 @@ from django.contrib.auth import views as auth_views
 from django.views.generic.base import RedirectView
 from django.contrib.auth.decorators import login_required
 from secretary import views, urls as APIs
+from schedule import urls as SchAPIs
 
 
 urlpatterns = [
@@ -30,6 +31,7 @@ urlpatterns = [
     url(r'^users/', include('registration.backends.simple.urls', namespace='users')),
     url('^diploma/add$', login_required(views.DiplomaCreate.as_view()), name='diploma_add'),
     url(r'^api/', include(APIs)),
+    url(r'^api/', include(SchAPIs)),
 
     # url(r'^api/lol_data', tests.guide_add_data),
 ]

@@ -19,7 +19,7 @@ class HandingPeriodSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = HandingPeriod
-        fields = ('id','period', 'date', 'start_time', 'end_time')
+        fields = ('start', 'end')
 
 
 class HandingDaySerializer(serializers.ModelSerializer):
@@ -28,7 +28,7 @@ class HandingDaySerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = HandingDay
-        fields = ('id','start', 'end')
+        fields = ('period','date', 'start_time', 'end_time')
 
 
 
