@@ -40,7 +40,7 @@ class GroupSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Group
-        fields = ( 'name')
+        fields = ( 'name' , 'spec')
 
 
 class CommissionSerilizer(serializers.ModelSerializer):
@@ -341,7 +341,7 @@ class GeneralUpd(generics.RetrieveUpdateDestroyAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
-    queryset = Student.objects.all()
+    queryset = General.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = GeneralSerializer
     lookup_field = 'id'
@@ -359,7 +359,7 @@ class CommissiontView(generics.ListCreateAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
-    queryset = Student.objects.all()
+    queryset = Commission.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = CommissionSerilizer
     lookup_field = 'id'
@@ -381,7 +381,7 @@ class CommissionUpd(generics.RetrieveUpdateDestroyAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
-    queryset = Student.objects.all()
+    queryset = Commission.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = CommissionSerilizer
     lookup_field = 'id'
@@ -398,7 +398,7 @@ class GroupView(generics.ListCreateAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
-    queryset = Student.objects.all()
+    queryset = Group.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = GroupSerializer
     lookup_field = 'id'
