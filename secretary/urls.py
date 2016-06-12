@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^logout', api.TokenRenderView.as_view()),
     url(r'^reviewer/(?P<id>[0-9]+)', api.ReviewersUpd.as_view()),
     url(r'^reviewer', api.ReviewersView.as_view()),
-    url(r'^student/(?P<id>[0-9]+)', api.StudentUpd.as_view()),
+    url(r'^student/(?P<user>[0-9]+)', api.StudentUpd.as_view()),
     url(r'^student', api.StudentView.as_view()),
     url(r'^chief/(?P<id>[0-9]+)', api.ChiefUpd.as_view()),
     url(r'^chief', api.ChiefView.as_view()),

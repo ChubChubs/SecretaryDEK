@@ -242,7 +242,7 @@ class StudentView(generics.ListCreateAPIView):
     queryset = Student.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = StudentSerializer
-    lookup_field = 'id'
+    lookup_field = 'user'
 
 
 class StudentUpd(generics.RetrieveUpdateDestroyAPIView):
@@ -264,7 +264,7 @@ class StudentUpd(generics.RetrieveUpdateDestroyAPIView):
     queryset = Student.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = StudentSerializer
-    lookup_field = 'id'
+    lookup_field = 'user'
 
 
 class ChiefView(generics.ListCreateAPIView):
