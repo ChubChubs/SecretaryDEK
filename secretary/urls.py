@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^group', api.GroupView.as_view()),
     url(r'^studrestrict/(?P<id>[0-9]+)', api.StudentsRestrictionsUpd.as_view()),
     url(r'^studrestrict', api.StudentsRestrictionsView.as_view()),
-    url(r'^commission/(?P<id>[0-9]+)', api.CommissionUpd.as_view()),
+    url(r'^commission/(?P<user>[0-9]+)', api.CommissionUpd.as_view()),
     url(r'^commission', api.CommissiontView.as_view()),
     url(r'^general/(?P<id>[0-9]+)', api.GeneralUpd.as_view()),
     url(r'^general', api.GeneralView.as_view()),

@@ -322,7 +322,7 @@ class GeneralView(generics.ListCreateAPIView):
     queryset = General.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = GeneralSerializer
-    lookup_field = 'id'
+    lookup_field = 'user'
 
 
 class GeneralUpd(generics.RetrieveUpdateDestroyAPIView):
@@ -344,7 +344,7 @@ class GeneralUpd(generics.RetrieveUpdateDestroyAPIView):
     queryset = General.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = GeneralSerializer
-    lookup_field = 'id'
+    lookup_field = 'user'
 
 
 class CommissiontView(generics.ListCreateAPIView):
