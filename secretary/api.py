@@ -420,7 +420,7 @@ class GroupUpd(generics.RetrieveUpdateDestroyAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
-    queryset = Student.objects.all()
+    queryset = Group.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = GroupSerializer
     lookup_field = 'id'
@@ -438,7 +438,7 @@ class StudentsRestrictionsView(generics.ListCreateAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
-    queryset = Student.objects.all()
+    queryset = StudentsRestriction.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = StudentsRestictionSerializer
     lookup_field = 'id'
@@ -460,7 +460,7 @@ class StudentsRestrictionsUpd(generics.RetrieveUpdateDestroyAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
-    queryset = Student.objects.all()
+    queryset = StudentsRestriction.objects.all()
     renderer_classes = (JSONRenderer, )
     serializer_class = StudentsRestictionSerializer
     lookup_field = 'id'
