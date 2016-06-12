@@ -504,3 +504,4 @@ class UsersUpd(generics.RetrieveUpdateDestroyAPIView):
     renderer_classes = (JSONRenderer, )
     serializer_class = UserSerializer
     lookup_field = 'id'
+
