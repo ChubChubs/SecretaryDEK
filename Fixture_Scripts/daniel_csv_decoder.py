@@ -57,43 +57,43 @@ print(base[0])
 print(dayz[0])
 print(recenz[3])
 print(rec_info[3])
-for opezdol in rec_info:
-    home = opezdol['home_address']
-    opezdol['home'] = opezdol.pop('home_address')
-    opezdol['passseries'] = opezdol.pop('pasport_a')
-    opezdol['passnum'] = opezdol.pop('pasport_b')
-    opezdol['passplace'] = opezdol.pop('pasport_c')
-    passplace = opezdol['passplace'].split(',')
+for guide in rec_info:
+    home = guide['home_address']
+    guide['home'] = guide.pop('home_address')
+    guide['passseries'] = guide.pop('pasport_a')
+    guide['passnum'] = guide.pop('pasport_b')
+    guide['passplace'] = guide.pop('pasport_c')
+    passplace = guide['passplace'].split(',')
     if len(passplace) > 1:
         if passplace[0][0].isdigit():
-            opezdol['passdate'] = datetime.strptime(passplace[0],"%d.%m.%Yр").date()
+            guide['passdate'] = datetime.strptime(passplace[0],"%d.%m.%Yр").date()
             del passplace[0]
-        opezdol['passplace'] = ''.join(passplace)
-    opezdol['idnum'] = opezdol.pop('id_code')
-    pip = opezdol['pip_full']
-    opezdol['name'] = pip.split(' ')[1]
-    opezdol['surname'] = pip.split(' ')[0]
-    opezdol['mname'] = pip.split(' ')[2]
-    opezdol.pop('pip_full')
-    opezdol['graduate'] = opezdol.pop('oswita')
-    opezdol['extra_graduate'] = opezdol.pop('spec_oswita')
-    opezdol['workplace'] = opezdol.pop('work_space_address')
-    children = opezdol.pop('count_child')
+        guide['passplace'] = ''.join(passplace)
+    guide['idnum'] = guide.pop('id_code')
+    pip = guide['pip_full']
+    guide['name'] = pip.split(' ')[1]
+    guide['surname'] = pip.split(' ')[0]
+    guide['mname'] = pip.split(' ')[2]
+    guide.pop('pip_full')
+    guide['graduate'] = guide.pop('oswita')
+    guide['extra_graduate'] = guide.pop('spec_oswita')
+    guide['workplace'] = guide.pop('work_space_address')
+    children = guide.pop('count_child')
     if len(children) > 0:
-        opezdol['children'] = children
+        guide['children'] = children
     else:
-        opezdol['children'] = None
-    opezdol['edugrade'] = opezdol.pop('V4en_z')
-    opezdol['level'] = opezdol.pop('Nauk_stup')
-    year = opezdol.pop('year_n')
+        guide['children'] = None
+    guide['edugrade'] = guide.pop('V4en_z')
+    guide['level'] = guide.pop('Nauk_stup')
+    year = guide.pop('year_n')
     if len(year) == 4:
-        opezdol['bdate'] = datetime.strptime(year,"%Y").date()
+        guide['bdate'] = datetime.strptime(year,"%Y").date()
     else:
-        opezdol['bdate'] = None
-    print(opezdol['bdate'])
-    opezdol['position'] = opezdol.pop('posada')
-    opezdol.pop('pip')
-    print(opezdol)
+        guide['bdate'] = None
+    print(guide['bdate'])
+    guide['position'] = guide.pop('posada')
+    guide.pop('pip')
+    print(guide)
 
 WriteDictToCSV("Reviewer.csv",['id','name','surname','mname','passseries','passnum','idnum','passplace','passdate','children'
         ,'graduate','extra_graduate','edugrade','level','workplace','home','position','bdate'],rec_info)

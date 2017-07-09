@@ -317,7 +317,7 @@ class GeneralView(generics.ListCreateAPIView):
     :returns:
     A JSON with applied data in it.
     """
-    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    authentication_classes = ( BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
     queryset = General.objects.all()
     renderer_classes = (JSONRenderer, )
@@ -339,7 +339,7 @@ class GeneralUpd(generics.RetrieveUpdateDestroyAPIView):
     :returns:
     Nothing
     """
-    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    authentication_classes = (BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
     queryset = General.objects.all()
     renderer_classes = (JSONRenderer, )
