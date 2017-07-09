@@ -10,7 +10,7 @@ from rest_framework import generics
 from rest_framework import serializers
 from rest_framework.authtoken.views import AuthTokenSerializer,ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from .models import Diploma, Reviewer, UserProfile, HandWeek
+from .models import Diploma, Reviewer, Student, StudentsRestriction, Commission, Chief, General, Group
 from docgen import generator
 # from datetime import datetime
 
@@ -25,7 +25,49 @@ from docgen import generator
     PUT /dogs/12345 — редактировать собаку 12345
     DELETE /dogs/12345 — удалить
 '''
+class StudentsRestictionSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Groups
+    """
+    class Meta:
+        model = Group
+        fields = ( 'chief', 'numberofstudents', 'handingperiod')
 
+
+class GroupSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Groups
+    """
+    class Meta:
+        model = Group
+        fields = ( 'name' , 'spec')
+
+
+class CommissionSerilizer(serializers.ModelSerializer):
+    """
+
+    """
+    class Meta:
+        model = Commission
+        fields = ( 'handingday', 'chairman', 'commissioner1', 'commissioner2', 'ommissioner3',
+                  'commissioner4', 'commissioner5' ,)
+
+class ChiefSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Chiefs.
+    """
+    class Meta:
+        model = Chief
+        fields = ( 'user', 'education', 'special_education', 'academic_status', 'degree', 'position')
+
+class GeneralSerializer(serializers.ModelSerializer):
+    """
+    Serializer for General data in user profiles
+    """
+    class Meta:
+        model = General
+        fields = ('user', 'bdate', 'mname', 'home', 'passseries', 'passnum', 'passplace' , 'passdate', 'idnum',
+                  'registered',)
 
 class DiplomaSerializer(serializers.ModelSerializer):
     """
@@ -33,8 +75,8 @@ class DiplomaSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Diploma
-        fields = ('id', 'theme', 'theme_eng', 'year', 'group', 'reviewer', 'datereview', 'guide', 'guidemark',
-                  'pageswork', 'pagespresentation', 'datehanding', 'type', 'fellowship', 'mark', )
+        fields = ('theme', 'theme_eng', 'group', 'reviewer', 'datereview', 'chief', 'chiefmark',
+                  'numberofpages', 'numberofslides', 'handingdate', 'type', 'fellowship', 'commissionmark', )
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -43,7 +85,7 @@ class UserSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = User
-        fields = ('id', 'username',)
+        fields = ('id', 'username', 'email', 'first_name', 'last_name')
 
 class ReviewerSerializer(serializers.ModelSerializer):
     """
@@ -52,24 +94,17 @@ class ReviewerSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Reviewer
-        fields = ('id', 'name', 'mname', 'surname', )
+        fields = ( 'user', 'children', 'education', 'special_education', 'academic_status', 'degree', 'position', 'workplace')
 
-''
-class ProfileSerializer(serializers.ModelSerializer):
+class StudentSerializer(serializers.ModelSerializer):
     """
     For Profile. Simply. Chunky. Exploitable!
     """
     class Meta:
-        model = UserProfile
-        fields = ('id', 'name', 'mname', 'surname', )
+        model = Student
+        fields = ( 'user', 'entry2uni', 'group', )
 
-class WeekSerializer(serializers.ModelSerializer):
-    """
-    For handing weeks.
-    """
-    class Meta:
-        model = HandWeek
-        fields = ('id','start', 'finish', 'season')
+
 
 class DiplomasView(generics.ListCreateAPIView):
     """
@@ -109,7 +144,8 @@ class ExampleView(APIView):
     renderer_classes = (JSONRenderer, )
 
     def get(self, request, format=None):
-        item = generator.gen_a_doc("doc")
+        #item = generator.gen_a_doc("barchelor_list")
+        item = generator.gen_many_docs("phd_direction")
         content = {
             "unicode black star": "★",
             "value": 999,
@@ -191,7 +227,7 @@ class ReviewersUpd(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 
-class ProfileView(generics.ListCreateAPIView):
+class StudentView(generics.ListCreateAPIView):
     """
     API for Profiles.
     Handles GET
@@ -203,13 +239,13 @@ class ProfileView(generics.ListCreateAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
-    queryset = UserProfile.objects.all()
+    queryset = Student.objects.all()
     renderer_classes = (JSONRenderer, )
-    serializer_class = ProfileSerializer
-    lookup_field = 'id'
+    serializer_class = StudentSerializer
+    lookup_field = 'user'
 
 
-class ProfileUpd(generics.RetrieveUpdateDestroyAPIView):
+class StudentUpd(generics.RetrieveUpdateDestroyAPIView):
     """
     Handles GET
     :returns:
@@ -225,29 +261,31 @@ class ProfileUpd(generics.RetrieveUpdateDestroyAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
-    queryset = UserProfile.objects.all()
+    queryset = Student.objects.all()
     renderer_classes = (JSONRenderer, )
-    serializer_class = ProfileSerializer
-    lookup_field = 'id'
+    serializer_class = StudentSerializer
+    lookup_field = 'user'
 
-class WeekView(generics.ListCreateAPIView):
+
+class ChiefView(generics.ListCreateAPIView):
     """
-    API for handling weeks.
+    API for Chief.
     Handles GET
     :returns:
-    All weeks.
+    All Profiles
     Handles POST
     :returns:
     A JSON with applied data in it.
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
-    queryset = HandWeek.objects.all()
+    queryset = Chief.objects.all()
     renderer_classes = (JSONRenderer, )
-    serializer_class = WeekSerializer
+    serializer_class = ChiefSerializer
     lookup_field = 'id'
 
-class WeekUpd(generics.RetrieveUpdateDestroyAPIView):
+
+class ChiefUpd(generics.RetrieveUpdateDestroyAPIView):
     """
     Handles GET
     :returns:
@@ -263,7 +301,207 @@ class WeekUpd(generics.RetrieveUpdateDestroyAPIView):
     """
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
-    queryset = HandWeek.objects.all()
+    queryset = Chief.objects.all()
     renderer_classes = (JSONRenderer, )
-    serializer_class = WeekSerializer
+    serializer_class = ChiefSerializer
     lookup_field = 'id'
+
+
+class GeneralView(generics.ListCreateAPIView):
+    """
+    API for Profiles.
+    Handles GET
+    :returns:
+    All Profiles
+    Handles POST
+    :returns:
+    A JSON with applied data in it.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+    queryset = General.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = GeneralSerializer
+    lookup_field = 'user'
+
+
+class GeneralUpd(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Handles GET
+    :returns:
+    A specified Profile.
+    Handles PUT.
+    It updates a specified Profile.
+    :returns:
+    Noting. Status_200
+    Handles DELETE
+    Deletes a specified Profile
+    :returns:
+    Nothing
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
+    queryset = General.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = GeneralSerializer
+    lookup_field = 'user'
+
+
+class CommissiontView(generics.ListCreateAPIView):
+    """
+    API for Profiles.
+    Handles GET
+    :returns:
+    All Profiles
+    Handles POST
+    :returns:
+    A JSON with applied data in it.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+    queryset = Commission.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = CommissionSerilizer
+    lookup_field = 'id'
+
+
+class CommissionUpd(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Handles GET
+    :returns:
+    A specified Profile.
+    Handles PUT.
+    It updates a specified Profile.
+    :returns:
+    Noting. Status_200
+    Handles DELETE
+    Deletes a specified Profile
+    :returns:
+    Nothing
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
+    queryset = Commission.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = CommissionSerilizer
+    lookup_field = 'id'
+
+class GroupView(generics.ListCreateAPIView):
+    """
+    API for Profiles.
+    Handles GET
+    :returns:
+    All Profiles
+    Handles POST
+    :returns:
+    A JSON with applied data in it.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+    queryset = Group.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = GroupSerializer
+    lookup_field = 'id'
+
+
+class GroupUpd(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Handles GET
+    :returns:
+    A specified Profile.
+    Handles PUT.
+    It updates a specified Profile.
+    :returns:
+    Noting. Status_200
+    Handles DELETE
+    Deletes a specified Profile
+    :returns:
+    Nothing
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
+    queryset = Group.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = GroupSerializer
+    lookup_field = 'id'
+
+
+class StudentsRestrictionsView(generics.ListCreateAPIView):
+    """
+    API for Profiles.
+    Handles GET
+    :returns:
+    All Profiles
+    Handles POST
+    :returns:
+    A JSON with applied data in it.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+    queryset = StudentsRestriction.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = StudentsRestictionSerializer
+    lookup_field = 'id'
+
+
+class StudentsRestrictionsUpd(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Handles GET
+    :returns:
+    A specified Profile.
+    Handles PUT.
+    It updates a specified Profile.
+    :returns:
+    Noting. Status_200
+    Handles DELETE
+    Deletes a specified Profile
+    :returns:
+    Nothing
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated, IsAdminUser, IsAdminUser)
+    queryset = StudentsRestriction.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = StudentsRestictionSerializer
+    lookup_field = 'id'
+
+
+class UsersView(generics.ListCreateAPIView):
+    """
+    API for reviewers.
+    Handles GET
+    :returns:
+    All reviewers
+    Handles POST
+    :returns:
+    A JSON with applied data in it.
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+    queryset = User.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = UserSerializer
+    lookup_field = 'id'
+
+
+class UsersUpd(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Handles GET
+    :returns:
+    A specified Reviewer.
+    Handles PUT.
+    It updates a specified Reviewer.
+    :returns:
+    Noting. Status_200
+    Handles DELETE
+    Deletes a specified Reviewer
+    :returns:
+    Nothing
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated, IsAdminUser)
+    queryset = User.objects.all()
+    renderer_classes = (JSONRenderer, )
+    serializer_class = UserSerializer
+    lookup_field = 'id'
+
