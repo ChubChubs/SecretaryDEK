@@ -4,9 +4,9 @@
 
 #### Загальний опис всіх таблиць
 
-[alt text][scheme_1]
+[???][scheme_1]
 
-[scheme_1]: https://raw.githubusercontent.com/ChubChubs/SecretaryDEK/master/docs/myapp_models.png "Загальний вигляд"
+[scheme_1]: https://github.com/ChubChubs/SecretaryDEK/blob/master/docs/myapp_models.png?raw=true "Загальний вигляд"
 
 #### Аплікуха: secretary 
 Служить для організації даних. 
