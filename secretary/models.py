@@ -22,6 +22,8 @@ class Group(models.Model):
     )
     spec = models.CharField(verbose_name="напрямок (Бакалавр, Спеціаліст чи Магістр)",max_length=40, choices=choices,
                             default="Бакалавр")
+    ipdo = models.BooleanField(verbose_name="ІПДО?")
+
     def __str__(self):
         return self.name
 
@@ -31,7 +33,7 @@ class Reviewer(models.Model):
     """
     #id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True,
     #                         blank=True)
-    user = models.OneToOneField(User, primary_key=True)
+    #user = models.OneToOneField(User, primary_key=True)
     children = models.IntegerField(null=True, verbose_name='Діти, шт.', blank=True)
     education = models.CharField(null=True, max_length=250, verbose_name="Освіта",blank=True)
     special_education = models.CharField(null=True, max_length=40, verbose_name="Спеціальна освіта",blank=True)
@@ -39,6 +41,14 @@ class Reviewer(models.Model):
     degree = models.CharField(null=True, max_length=10, verbose_name="Науковий ступінь",blank=True)
     position = models.CharField(null=True, max_length=250, verbose_name="Посада",blank=True)
     workplace = models.CharField(null=True, max_length=250, verbose_name="Місце роботи",blank=True)
+    bdate = models.DateField(null=True, verbose_name="Дата народження", blank=True)
+    mname = models.CharField(null=False, max_length=100, verbose_name="По-батькові")
+    home = models.CharField(null=True, max_length=250, verbose_name="Місце проживання", blank=True)
+    passseries = models.CharField(null=True, max_length=5, verbose_name="Серія паспорта", blank=True)
+    passnum = models.IntegerField(null=True, verbose_name="Номер паспорта", blank=True)
+    passplace = models.CharField(max_length=50, null=True, verbose_name="Ким виданий", blank=True)
+    passdate = models.DateField(null=True, verbose_name="Коли виданий", blank=True)
+    idnum = models.CharField(max_length=13, null=True, verbose_name="Ідентифікаційний код", blank=True)
     def __str__(self):
         return self.user.last_name + ' ' + self.user.first_name
 
@@ -55,6 +65,13 @@ class Chief(models.Model):
     academic_status = models.CharField(null=True, max_length=10, verbose_name="Вчене звання",blank=True)
     degree = models.CharField(null=True, max_length=10, verbose_name="Науковий ступінь",blank=True)
     position = models.CharField(null=True, max_length=250, verbose_name="Посада",blank=True)
+    bdate = models.DateField(null=True, verbose_name="Дата народження", blank=True)
+    home = models.CharField(null=True, max_length=250, verbose_name="Місце проживання", blank=True)
+    passseries = models.CharField(null=True, max_length=5, verbose_name="Серія паспорта", blank=True)
+    passnum = models.IntegerField(null=True, verbose_name="Номер паспорта", blank=True)
+    passplace = models.CharField(max_length=50, null=True, verbose_name="Ким виданий", blank=True)
+    passdate = models.DateField(null=True, verbose_name="Коли виданий", blank=True)
+    idnum = models.CharField(max_length=13, null=True, verbose_name="Ідентифікаційний код", blank=True)
     def __str__(self):
         return self.user.last_name + ' ' + self.user.first_name
 
@@ -69,14 +86,7 @@ class General(models.Model):
     """
     # id = models.IntegerField(verbose_name='Id', primary_key=True, unique=True, db_index=True, auto_created=True)
     user = models.OneToOneField(User, primary_key=True)
-    bdate = models.DateField(null=True, verbose_name="Дата народження", blank=True)
     mname = models.CharField(null=False, max_length=100, verbose_name="По-батькові")
-    home = models.CharField(null=True, max_length=250, verbose_name="Місце проживання",blank=True)
-    passseries = models.CharField(null=True, max_length=5, verbose_name="Серія паспорта",blank=True)
-    passnum = models.IntegerField(null=True, verbose_name="Номер паспорта",blank=True)
-    passplace = models.CharField(max_length=50, null=True, verbose_name="Ким виданий",blank=True)
-    passdate = models.DateField(null=True, verbose_name="Коли виданий",blank=True)
-    idnum = models.CharField(max_length=13, null=True, verbose_name="Ідентифікаційний код",blank=True)
     registered = models.BooleanField(verbose_name="Валідний?")
 
     def __str__(self):
@@ -121,7 +131,8 @@ class Diploma(models.Model):
     numberofpages = models.IntegerField(null=True, verbose_name='Клькість сторінок в записці', blank=True)
     numberofslides = models.IntegerField(null=True, verbose_name='Кількість слайдів у презентації', blank=True)
     handingdate = models.ForeignKey(HandingDay, to_field='date', verbose_name="Дата захисту", null=True,blank=True,)
-    type = models.BooleanField( verbose_name='Диплом-то червоний?', blank=True)
+    type = models.BooleanField( verbose_name='Захищений?', default=False)
+    handed = models.BooleanField( verbose_name='Диплом-то червоний?', blank=True)
     approval = models.BooleanField( verbose_name='Диплом-то зарев’юваний?', default=False)
     fellowship = models.BooleanField( verbose_name='Рекомендований в аспірантуру?', blank=True)
     commissionmark = models.IntegerField(null=True, verbose_name='Оцінка', blank=True)
